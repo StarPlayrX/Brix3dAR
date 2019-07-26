@@ -7,20 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EA83ED7420758B13006AB72E /* emulogic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA83ED7320758B13006AB72E /* emulogic.ttf */; };
+		5F4AEBB722EA816300AAC1C5 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4AEBB622EA816300AAC1C5 /* Common.swift */; };
 		EAC845A02051F3B3002AC10B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC8459F2051F3B3002AC10B /* AppDelegate.swift */; };
 		EAC845A22051F3B3002AC10B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC845A12051F3B3002AC10B /* art.scnassets */; };
 		EAC845A42051F3B3002AC10B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC845A32051F3B3002AC10B /* ViewController.swift */; };
 		EAC845A72051F3B3002AC10B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC845A52051F3B3002AC10B /* Main.storyboard */; };
 		EAC845A92051F3B4002AC10B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC845A82051F3B4002AC10B /* Assets.xcassets */; };
 		EAC845AC2051F3B4002AC10B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC845AA2051F3B4002AC10B /* LaunchScreen.storyboard */; };
-		EAC845B42051F4E7002AC10B /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC845B32051F4E7002AC10B /* Common.swift */; };
 		EAFBF58E20759C5500DDE6F9 /* prstart.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EAFBF58D20759C5500DDE6F9 /* prstart.ttf */; };
 		EAFBF59020759E9100DDE6F9 /* ARCADE_N.TTF in Resources */ = {isa = PBXBuildFile; fileRef = EAFBF58F20759E9100DDE6F9 /* ARCADE_N.TTF */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EA83ED7320758B13006AB72E /* emulogic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = emulogic.ttf; path = ../../UFEmoji/UFEmoji/emulogic.ttf; sourceTree = "<group>"; };
+		5F4AEBB622EA816300AAC1C5 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = "../../../uf-emoji-video-game1/BrixAR/BrixAR/Common.swift"; sourceTree = "<group>"; };
 		EAC8459C2051F3B3002AC10B /* Brix3dAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brix3dAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC8459F2051F3B3002AC10B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAC845A12051F3B3002AC10B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -29,7 +28,6 @@
 		EAC845A82051F3B4002AC10B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAC845AB2051F3B4002AC10B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAC845AD2051F3B4002AC10B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EAC845B32051F4E7002AC10B /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = ../../BrixAR/BrixAR/Common.swift; sourceTree = "<group>"; };
 		EAFBF58D20759C5500DDE6F9 /* prstart.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = prstart.ttf; sourceTree = "<group>"; };
 		EAFBF58F20759E9100DDE6F9 /* ARCADE_N.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = ARCADE_N.TTF; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -64,15 +62,14 @@
 		EAC8459E2051F3B3002AC10B /* Brix3dAR */ = {
 			isa = PBXGroup;
 			children = (
+				5F4AEBB622EA816300AAC1C5 /* Common.swift */,
 				EAC8459F2051F3B3002AC10B /* AppDelegate.swift */,
 				EAC845A12051F3B3002AC10B /* art.scnassets */,
 				EAC845A32051F3B3002AC10B /* ViewController.swift */,
-				EAC845B32051F4E7002AC10B /* Common.swift */,
 				EAC845A52051F3B3002AC10B /* Main.storyboard */,
 				EAC845A82051F3B4002AC10B /* Assets.xcassets */,
 				EAC845AA2051F3B4002AC10B /* LaunchScreen.storyboard */,
 				EAC845AD2051F3B4002AC10B /* Info.plist */,
-				EA83ED7320758B13006AB72E /* emulogic.ttf */,
 				EAFBF58D20759C5500DDE6F9 /* prstart.ttf */,
 				EAFBF58F20759E9100DDE6F9 /* ARCADE_N.TTF */,
 			);
@@ -141,7 +138,6 @@
 				EAC845A22051F3B3002AC10B /* art.scnassets in Resources */,
 				EAFBF58E20759C5500DDE6F9 /* prstart.ttf in Resources */,
 				EAC845AC2051F3B4002AC10B /* LaunchScreen.storyboard in Resources */,
-				EA83ED7420758B13006AB72E /* emulogic.ttf in Resources */,
 				EAFBF59020759E9100DDE6F9 /* ARCADE_N.TTF in Resources */,
 				EAC845A92051F3B4002AC10B /* Assets.xcassets in Resources */,
 				EAC845A72051F3B3002AC10B /* Main.storyboard in Resources */,
@@ -156,7 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAC845A42051F3B3002AC10B /* ViewController.swift in Sources */,
-				EAC845B42051F4E7002AC10B /* Common.swift in Sources */,
+				5F4AEBB722EA816300AAC1C5 /* Common.swift in Sources */,
 				EAC845A02051F3B3002AC10B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -302,6 +298,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 469UCUB275;
 				INFOPLIST_FILE = Brix3dAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
@@ -321,6 +318,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 469UCUB275;
 				INFOPLIST_FILE = Brix3dAR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
