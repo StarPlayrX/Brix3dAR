@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5F4AEBB722EA816300AAC1C5 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4AEBB622EA816300AAC1C5 /* Common.swift */; };
+		6F00D8E127605C0700F4B165 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F00D8E027605C0700F4B165 /* Common.swift */; };
 		EAC845A02051F3B3002AC10B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC8459F2051F3B3002AC10B /* AppDelegate.swift */; };
 		EAC845A22051F3B3002AC10B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC845A12051F3B3002AC10B /* art.scnassets */; };
 		EAC845A42051F3B3002AC10B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC845A32051F3B3002AC10B /* ViewController.swift */; };
@@ -19,7 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		5F4AEBB622EA816300AAC1C5 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Common.swift; path = "../../../uf-emoji-video-game1/BrixAR/BrixAR/Common.swift"; sourceTree = "<group>"; };
+		6F00D8E027605C0700F4B165 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		EAC8459C2051F3B3002AC10B /* Brix3dAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brix3dAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC8459F2051F3B3002AC10B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAC845A12051F3B3002AC10B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		EAC8459E2051F3B3002AC10B /* Brix3dAR */ = {
 			isa = PBXGroup;
 			children = (
-				5F4AEBB622EA816300AAC1C5 /* Common.swift */,
+				6F00D8E027605C0700F4B165 /* Common.swift */,
 				EAC8459F2051F3B3002AC10B /* AppDelegate.swift */,
 				EAC845A12051F3B3002AC10B /* art.scnassets */,
 				EAC845A32051F3B3002AC10B /* ViewController.swift */,
@@ -151,8 +151,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F00D8E127605C0700F4B165 /* Common.swift in Sources */,
 				EAC845A42051F3B3002AC10B /* ViewController.swift in Sources */,
-				5F4AEBB722EA816300AAC1C5 /* Common.swift in Sources */,
 				EAC845A02051F3B3002AC10B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
