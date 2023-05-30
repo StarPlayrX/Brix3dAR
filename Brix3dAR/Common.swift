@@ -20,57 +20,56 @@ var ballCategory = Int(16)
 var gridCategory = Int(32)
 
 var virtualstick = SCNNode()
-var gScale = Float(0.4)
+var gScale = Float(1.0)
 var throttle = Float(0.25)
 var bounce = Float(1.5)
 var buzz = Bool(true)
 var brixCount = Int(125)
 var gImageSlices = [[UIImage]]()
 var cubeNode = SCNNode()
-var restartLevel = Bool(false)
+var restartLevel = Bool(true)
 var score = SCNText()
 var scoreVal = Int(0)
 var gridCounter = Int(0)
 
 func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]], snapshot: UIImage) {
-    
-    
-    
     gamenode.simdScale = simd_float3(x:gScale, y:gScale, z:gScale)
     
     cubeNode.position = SCNVector3(x:0,y:0,z:0 )
     gamenode.addChildNode(cubeNode)
     
-    /*
-    let field = SCNPhysicsField.turbulenceField(smoothness: 100, animationSpeed: 100)
-    let fieldNode = SCNNode()
-    field.scope = .insideExtent
-    field.direction.x = 0
-    field.direction.y = 0
-    field.direction.z = 0
-    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
-    field.usesEllipsoidalExtent = true
-    fieldNode.position.z = Float(gDepth / 2)
-    fieldNode.physicsField = field
-    fieldNode.physicsField?.falloffExponent = 0.01
-    gamenode.addChildNode(fieldNode)
-    field.strength = 0.1
-    */
-    
     //Draw Brix
     gImageSlices = slicedImages
     drawManyBrix(slicedImages: gImageSlices)
     
-    //Draw a Grid
+  
+//    let field = SCNPhysicsField.turbulenceField(smoothness: 100, animationSpeed: 100)
+//    let fieldNode = SCNNode()
+//    field.scope = .insideExtent
+//    field.direction.x = 0
+//    field.direction.y = 0
+//    field.direction.z = 0
+//    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
+//    field.usesEllipsoidalExtent = true
+//    fieldNode.position.z = Float(gDepth / 2)
+//    fieldNode.physicsField = field
+//    fieldNode.physicsField?.falloffExponent = 0.01
+//    gamenode.addChildNode(fieldNode)
+//    field.strength = 1.0
+   
     
-    //
-    
-    let zGrid = CGFloat(-0.021)
+    let zGrid = CGFloat(gDepth / 1.75)
     
     let gridZone : Array<(x:CGFloat,y:CGFloat,z:CGFloat)> = [
-        (x:-gWidth / 3,y:gHeight / 3,z:gDepth - zGrid), (x:0,y:gHeight / 3,z:gDepth - zGrid), (x:gWidth / 3,y:gHeight / 3,z:gDepth - zGrid),
-        (x:-gWidth / 3,y:0,z:gDepth - zGrid),           (x:0,y:0,z:gDepth - zGrid),           (x:gWidth / 3,y:0,z:gDepth - zGrid),
-        (x:-gWidth / 3,y:-gHeight / 3,z:gDepth - zGrid),(x:0,y:-gHeight / 3,z:gDepth - zGrid),(x:gWidth / 3,y:-gHeight / 3,z:gDepth - zGrid),
+        (x: -gWidth / 3, y: gHeight / 3,  z: zGrid),
+        (x: 0,           y: gHeight / 3,  z: zGrid),
+        (x: gWidth / 3,  y: gHeight / 3,  z: zGrid),
+        (x: -gWidth / 3, y: 0,            z: zGrid),
+        (x: 0,           y: 0,            z: zGrid),
+        (x: gWidth / 3,  y: 0,            z: zGrid),
+        (x: -gWidth / 3, y: -gHeight / 3, z: zGrid),
+        (x: 0,           y: -gHeight / 3, z: zGrid),
+        (x: gWidth / 3,  y: -gHeight / 3, z: zGrid),
     ]
     
     for grid in gridZone {
@@ -82,7 +81,11 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
         let x = grid.x
         let y = grid.y
         let z = grid.z
-        drawPlane(gameNode: gamenode, Name: name, Material: gridMaterial, Plane: gridPlane, Opacity: opacity, X: Float(x), Y: Float(y), Z: Float(z), Type: 1)
+        drawPlane(gameNode: gamenode,
+                  Name: name,
+                  Material: gridMaterial,
+                  Plane: gridPlane,
+                  Opacity: opacity, X: Float(x), Y: Float(y), Z: Float(z), Type: 1)
     }
   
     //Common Material for the Box
@@ -90,7 +93,6 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     material.diffuse.contents = UIColor.lightGray
     
     //Floor
-    //let floorPlane = SCNPlane(width: 0.8, height: 1.5,  )
     let floorBox = SCNBox(width: gWidth, height: 0.02, length: gDepth, chamferRadius: 0.02)
     let floorMaterial = SCNMaterial()
     floorMaterial.diffuse.contents = UIColor.cyan
@@ -98,8 +100,15 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     var name = String("floor")
     var x = Float(0)
     var y = Float(-gHeight / 2)
-    var z = Float(gDepth / 2)
-    drawSides(gameNode: gamenode, Name: name, Material: floorMaterial, Box: floorBox, Opacity: opacity, X: x, Y: y, Z: z)
+    var z = Float(gDepth / 4)
+    
+    drawSides(gameNode: gamenode,
+              Name: name,
+              Material: floorMaterial,
+              Box: floorBox, Opacity:
+            opacity,
+              X: x, Y: y, Z: z
+    )
     
     //Top
     let topBox = SCNBox(width: gWidth, height: 0.02, length: gDepth, chamferRadius: 0.02)
@@ -109,8 +118,15 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     name = String("top")
     x = Float(0)
     y = Float(gHeight / 2)
-    z = Float(gDepth / 2)
-    drawSides(gameNode: gamenode, Name: name, Material: topMaterial, Box: topBox, Opacity: opacity, X: x, Y: y, Z: z)
+    z = Float(gDepth / 4)
+   
+    drawSides(gameNode: gamenode,
+              Name: name,
+              Material: topMaterial,
+              Box: topBox,
+              Opacity: opacity,
+              X: x, Y: y, Z: z
+    )
     
     //Left
     //let leftPlane = SCNPlane(width: 1.5, height: 1.5 )
@@ -121,7 +137,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     name = String("left")
     x = Float(-gWidth / 2)
     y = Float(0)
-    z = Float(gDepth / 2)
+    z = Float(gDepth / 4)
     drawSides(gameNode: gamenode, Name: name, Material: leftMaterial, Box: leftBox, Opacity: opacity, X: x, Y: y, Z: z)
     
     //Right
@@ -134,7 +150,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     name = String("right")
     x = Float(gWidth / 2)
     y = Float(0)
-    z = Float(gDepth  / 2)
+    z = Float(gDepth  / 4)
     drawSides(gameNode: gamenode, Name: name, Material: rightMaterial, Box: rightBox, Opacity: opacity, X: x, Y: y, Z: z)
 
 
@@ -158,13 +174,9 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     name = String("front")
     x = Float(0)
     y = Float(0)
-    z = Float(gDepth)
+    z = Float(gDepth / 1.25)
     drawSides(gameNode: gamenode, Name: name, Material: frontMaterial, Box: frontBox, Opacity: opacity, X: x, Y: y, Z: z)
 
- 
-
-  
-    
     //Paddle
     let paddleMaterial = SCNMaterial()
     paddleMaterial.diffuse.contents = UIColor.blue
@@ -173,7 +185,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     name = String("paddle")
     x = Float(0)
     y = Float(0)
-    z = Float(gDepth - 0.05)
+    z = Float(gDepth / 1.6)
     drawPaddle(gameNode: gamenode, Name: name, Material: paddleMaterial, Paddle: paddle, Opacity: opacity, X: x, Y: y, Z: z)
     
     
@@ -182,7 +194,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     //let rotation = SCNAction.rotateBy(x: .pi / 4, y: .pi / 4, z: -.pi / 4, duration: 2)
     //let rotation2 = SCNAction.rotateBy(x: .pi / 8, y: .pi / 16, z: 0, duration: 1)
 
-    let moveblocks = SCNAction.moveBy(x: 0, y: 0, z: 1, duration: 2)
+    let moveblocks = SCNAction.moveBy(x: 0, y: 0, z: CGFloat(0.667), duration: 2)
     // let moveblocks = SCNAction.moveBy(x: 0, y: -0.15, z: 1.0, duration: 1.5)
     
     /*
@@ -207,50 +219,26 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     
     
     let h = Float(gHeight)
-    let d = Float(gDepth)
     let w = Float(gWidth)
-    let s = Float(0.1)
-    let p = Float(0.08)
+    let s = Float(0.2)
     
-    let geoCoords : Array<(x:Float,y:Float,z:Float)> = [
-        
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * -8)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * -8)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * -8)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * -8)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * -8)),
-                
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -7)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -7)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -7)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -7)), 
-
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * -6)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * -6)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * -6)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * -6)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * -6)),
-
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -5)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -5)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -5)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -5)), 
-
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * -4)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * -4)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * -4)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * -4)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * -4)),
-
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -3)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -3)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -3)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -3)), 
-
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * -2)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * -2)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * -2)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * -2)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * -2)),
-        
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -1)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -1)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * -1)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * -1)), 
-        
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * 0)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * 0)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * 0)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * 0)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * 0)),
-                                    
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 1)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 1)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 1)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 1)), 
+    let numRows = 9
+    let numColumns = 5
+    let startX = -w / 2
+    let startY = -h / 2
+    let startZ = Float(0)
     
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * 2)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * 2)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * 2)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * 2)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * 2)),
-    
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 3)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 3)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 3)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 3)), 
-    
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * 4)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * 4)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * 4)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * 4)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * 4)),
-        
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 5)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 5)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 5)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 5)), 
+    var geoCoords: [(x: Float, y: Float, z: Float)] = []
 
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * 6)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * 6)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * 6)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * 6)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * 6)),
+    //Refactored
+    for row in 0..<numRows {
+        for column in 0..<numColumns {
+            let x = startX + (Float(column) * (w / 2 - s / 1))
+            let z = startZ + (Float(row) * s)
+            geoCoords.append((x: x, y: startY, z: z))
+        }
+    }
     
-    (x:((-w/2 + s) + (-w/4 + s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 7)),(x:(-w/4 + s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 7)), (x:(w/4 - s/2) / 2,y:-h/2 + 0.02,z:d/2 + (p * 7)),  (x:((w/2 - s) + (w/4 - s/2)) / 2,y:-h/2 + 0.02,z:d/2 + (p * 7)), 
-    
-        (x:-w/2 + s,y:-h/2 + 0.02,z:d/2 + (p * 8)), (x:-w/4 + s/2,y:-h/2 + 0.02,z:d/2 + (p * 8)), (x:0,y:-h/2 + 0.02,z:d/2 + (p * 8)), (x:w/4 - s/2,y:-h/2 + 0.02,z:d/2 + (p * 8)), (x:w/2 - s,y:-h/2 + 0.02,z:d/2 + (p * 8)),
-
-
-    ]
-
     let rndHeights : Array<Float> = [
         0.005,
         0.010,
@@ -269,8 +257,6 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
         z = Float(g.z)
         drawGeo(gameNode: gamenode, Name: name, Material: geoMaterial, Geo: geo, Opacity: opacity, X: x, Y: y, Z: z) 
     }
-
-    
     
     //Ball
     let ballMaterial = SCNMaterial()
@@ -282,56 +268,9 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     name = String("sphere")
     x = Float(0)
     y = Float(0)
-    z = Float(gDepth / 1.5)
+    z = Float(gDepth / 2)
     drawSphere(gameNode: gamenode, Name: name, Material: ballMaterial, Sphere: ball, Opacity: opacity, X: x, Y: y, Z: z)
     
-    
-    //Helps made the lighting not so harsh
-    /*let light2 = SCNLight()
-    let lightNode2 = SCNNode()
-    light2.type = .ambient
-    lightNode2.light = light2
-    lightNode2.simdPosition.z = 4
-    lightNode2.simdPosition.y = 2
-    lightNode2.simdPosition.x = 0
-    gamenode.addChildNode(lightNode2)
-    light2.intensity = 256
-    light2.color = UIColor.white
-    
-    //Dynamic Shadows in code by Todd Bruss © 2018
-    let light = SCNLight()
-    let lightNode = SCNNode()
-    light.castsShadow = false
-    light.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1.0)
-    light.shadowMode = .deferred
-    light.shadowRadius = 32 
-    light.shadowBias = 256 * CGFloat(gScale)
-    light.shadowSampleCount = Int(8 * gScale)
-    light.maximumShadowDistance = 64 * CGFloat(gScale)
-    light.shadowCascadeCount = 1
-    light.shadowCascadeSplittingFactor = 0.1
-    light.forcesBackFaceCasters = false
-    light.sampleDistributedShadowMaps = true
-    light.automaticallyAdjustsShadowProjection = false
-    light.shadowMapSize = CGSize(width: 512 * CGFloat(gScale), height: 512 * CGFloat(gScale))
-    light.color = UIColor.white
-    light.spotOuterAngle = 90
-    light.spotInnerAngle = 0
-    light.type = .spot
-    light.orthographicScale = 1
-    light.attenuationFalloffExponent = CGFloat(2 * gScale)
-    light.attenuationStartDistance = CGFloat(128 * gScale)
-    light.attenuationEndDistance = CGFloat(256 * gScale)
-    lightNode.light = light
-    lightNode.simdPosition = gamenode.simdPosition
-    lightNode.simdPosition.z = 8
-    lightNode.simdPosition.y = 4
-    lightNode.simdPosition.x = 0
-    gamenode.addChildNode(lightNode)
-    light.intensity = 1000*/
-    
-    
-
 }
 
 
@@ -346,50 +285,14 @@ func drawPlane(gameNode:SCNNode,Name:String,Material:SCNMaterial,Plane:SCNPlane,
     let physicsbody = SCNPhysicsBody(type: .static, shape: planeShape)
     node.physicsBody = physicsbody
     node.physicsBody?.categoryBitMask = gridCategory
-    node.physicsBody?.isAffectedByGravity = false
     node.physicsBody?.allowsResting = false
     node.geometry?.firstMaterial = Material
-    node.physicsBody?.restitution = CGFloat(bounce + throttle)
     node.opacity = Opacity
     node.name = Name
-    
     node.renderingOrder = 0
 
-    
-    /*
-    if Type == 1 {
-        //node.renderingOrder = 1
-    }
-    
-    //turn plane 180
-    if Type == 0 {
-       // node.eulerAngles.z = -.pi
-        //node.renderingOrder = -1
-    }
-    
-    if Type == 2 {
-        node.eulerAngles.y = .pi / 2
-       // node.renderingOrder = 1
-    }
-    
-    if Type == 3 {
-        node.eulerAngles.y = .pi / 2
-      //  node.renderingOrder = 1
-    }
-    
-    if Type == 4 {
-        node.eulerAngles.x = .pi / 2
-      //  node.renderingOrder = 1
-    }
-    
-    if Type == 5 {
-        node.eulerAngles.x = .pi / 2
-      //  node.renderingOrder = 1
-    }
-    */
     gameNode.addChildNode(node)
 
-    //node.physicsBody?.resetTransform()
 }
 
 
@@ -404,18 +307,18 @@ func drawPaddle(gameNode:SCNNode,Name:String,Material:SCNMaterial,Paddle:SCNBox,
                                    options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
 
 
-    let physicsbody = SCNPhysicsBody(type: .kinematic, shape: boxShape)
+    let physicsbody = SCNPhysicsBody(type: .static, shape: boxShape)
     node.physicsBody = physicsbody
     node.physicsBody?.categoryBitMask = paddleCategory
     node.physicsBody?.collisionBitMask = ballCategory + paddleCategory
     node.physicsBody?.contactTestBitMask = ballCategory + paddleCategory
-    node.physicsBody?.restitution = CGFloat(bounce + throttle)
-    node.physicsBody?.isAffectedByGravity = false
     node.geometry?.firstMaterial = Material
     node.opacity = Opacity
     node.name = Name
     virtualstick = node
     node.renderingOrder = 0
+
+
     gameNode.addChildNode(node)
 }
 
@@ -430,17 +333,19 @@ func drawSides(gameNode:SCNNode,Name:String,Material:SCNMaterial,Box:SCNBox,Opac
     
     let physicsbody = SCNPhysicsBody(type: .kinematic, shape: boxShape)
     node.physicsBody = physicsbody
-    node.physicsBody?.restitution = CGFloat(bounce + throttle)
     node.physicsBody?.categoryBitMask = wallCategory
     node.physicsBody?.collisionBitMask = ballCategory
     node.physicsBody?.contactTestBitMask = ballCategory
-    node.physicsBody?.isAffectedByGravity = false
     node.geometry?.firstMaterial = Material
     node.opacity = Opacity
     node.name = Name
     node.renderingOrder = 0
     gameNode.addChildNode(node)
     
+    node.physicsBody?.restitution = 0.7
+
+
+
     if Name == "back" {
         
         let scoreMaterial = SCNMaterial()
@@ -478,15 +383,14 @@ func drawGeo(gameNode:SCNNode,Name:String,Material:SCNMaterial,Geo:SCNCylinder,O
     
     let physicsbody = SCNPhysicsBody(type: .kinematic, shape: shape)
     node.physicsBody = physicsbody
-    node.physicsBody?.restitution = CGFloat(bounce + throttle)
     node.physicsBody?.categoryBitMask = wallCategory
     node.physicsBody?.collisionBitMask = ballCategory
     node.physicsBody?.contactTestBitMask = ballCategory
-    node.physicsBody?.isAffectedByGravity = false
     node.geometry?.firstMaterial = Material
     node.opacity = Opacity
     node.name = Name
     node.renderingOrder = 0
+
     gameNode.addChildNode(node)
 }
 
@@ -508,7 +412,6 @@ func drawBrix(gameNode:SCNNode,Name:String,Material:[SCNMaterial],Brix:SCNBox,Op
     node.physicsBody = physicsbody
     node.physicsBody?.categoryBitMask = brixCategory
     node.physicsBody?.allowsResting = false
-    node.physicsBody?.isAffectedByGravity = false
     node.geometry?.materials = Material
     node.opacity = Opacity
     node.name = Name
@@ -520,15 +423,12 @@ func drawBrix(gameNode:SCNNode,Name:String,Material:[SCNMaterial],Brix:SCNBox,Op
 
         //let actionSequence = SCNAction.sequence([wait,moveblocks])
         // node.runAction(actionSequence)
-    
-    node.physicsBody?.restitution = CGFloat(bounce + throttle)
+
+    node.physicsBody?.restitution = 0.7
+
     node.renderingOrder = 0
 
     gameNode.addChildNode(node)
-    
-    
-    
-    
 }
 
 
@@ -549,28 +449,20 @@ func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphe
     node.physicsBody?.categoryBitMask = ballCategory
     node.physicsBody?.contactTestBitMask = ballCategory + gridCategory + wallCategory + brixCategory + paddleCategory
     node.physicsBody?.collisionBitMask = ballCategory + wallCategory + brixCategory + paddleCategory
-    node.physicsBody?.isAffectedByGravity = false
     node.geometry?.firstMaterial = Material
     node.opacity = Opacity
     
     node.name = Name
     node.physicsBody?.allowsResting = false
+   
+    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        node.physicsBody?.applyForce(SCNVector3(x: -0.5, y: -1, z: -0.5), asImpulse: true)
+        node.physicsBody?.restitution = 0.6
+        node.castsShadow = true
+        gameNode.addChildNode(node)
+    }
     
-    //node.physicsBody?.angularVelocity = SCNVector4(x:0.25,y:-0.25,z:0.25,w:-0.25)
-    //node.physicsBody?.applyTorque(SCNVector4(x:-throttle,y:-throttle,z:-throttle,w:0), asImpulse: true)
-    node.physicsBody?.applyForce(SCNVector3(x: -throttle, y: -throttle, z: -throttle), asImpulse: true)
-    
-    //node.physicsBody?.angularVelocityFactor = SCNVector3(x:1 * gScale,y:1 * gScale,z:1 * gScale)
-    node.physicsBody?.velocityFactor = SCNVector3(x:1 * gScale,y:1 * gScale,z:1 * gScale)
-    
-    node.castsShadow = true
-    
-    node.physicsBody?.restitution = CGFloat(bounce + throttle)
-    
-    
-    node.renderingOrder = 0
-
-    gameNode.addChildNode(node)
+ 
 }
 
 // This maps are colors / images 
@@ -772,8 +664,6 @@ func drawManyBrix(slicedImages: [[UIImage]]) {
         slicedImages[2][3]  //bottom
     ]
     let materials4b = map(images: images4b)
-    
-    
     
     //5b
     let images5b = [

@@ -1,4 +1,4 @@
-    //
+//
 //  ViewController.swift
 //  Brix3dAR
 //
@@ -12,13 +12,13 @@ import ARKit
 
 var panfingers = 1
 var doubletap = 2
-  
+
 var gWidth = CGFloat()
 var gHeight = CGFloat()
 var gDepth = CGFloat()
 var gAmnesty = Bool(false)
 class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     
     override func viewDidLoad() {
@@ -33,22 +33,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         let scene = SCNScene()
         sceneView.scene = scene
         
-        gWidth = CGFloat(0.8)
-        gHeight = CGFloat( (sceneView.frame.height - 160) * CGFloat(gWidth) / sceneView.frame.width)
-        gDepth = CGFloat(gHeight * 1.25)
-                
+        gWidth = CGFloat(1.0)
+        gHeight = CGFloat(gWidth * 0.85)
+        gDepth = CGFloat(gWidth * 2)
+        
         
         let world = SCNPhysicsWorld()
-        world.gravity = SCNVector3(x:0,y:0,z:0)
+        world.gravity = SCNVector3(x:0, y:0, z:0)
         sceneView.scene.physicsWorld.contactDelegate = self
         sceneView.scene.physicsWorld.gravity = world.gravity
-
+        
         //This is a test
         
         // Add pan gesture for dragging the textNode about
         sceneView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:))))
         sceneView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(doubleTapped(_:))))
-    
+        
     }
     
     override var prefersHomeIndicatorAutoHidden: Bool {
@@ -115,7 +115,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.session.run(configuration)
         
         toggleTorch(on: false)// turn on the flash
-
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -130,7 +130,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         // Release any cached data, images, etc that aren't in use.
     }
     
-
+    
     // MARK: - ARSCNViewDelegate
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if !gamestartup && !firstplane {
@@ -139,7 +139,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             //firstplane = true
             // Create a SceneKit plane to visualize the plane anchor using its position and extent.
-            let box = SCNBox(width: CGFloat(0.5), height: 0.02, length: CGFloat(0.5), chamferRadius: 0.00)
+            let box = SCNBox(width: CGFloat(0.75), height: 0.02, length: CGFloat(0.75), chamferRadius: 0.00)
             let planeNode = SCNNode(geometry: box)
             
             planeNode.simdPosition.z = -0.02
@@ -157,7 +157,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             node.addChildNode(planeNode)
             
         }
-      
+        
     }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -175,41 +175,41 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
     }
     
-  
-
+    
+    
     // selects the anchor at the specified location and removes all other unused anchors
     func selectExistingPlane(location: CGPoint) {
-    
+        
         let hitResults = sceneView.hitTest(location, types: .existingPlane)
         if hitResults.count > 0 && !gamestartup {
-            let result: ARHitTestResult = hitResults.first!
-            if let planeAnchor = result.anchor as? ARPlaneAnchor {
+            if let result: ARHitTestResult = hitResults.first,
+               let planeAnchor = result.anchor as? ARPlaneAnchor {
                 // keep track of selected anchor only
-                gamestartup = true;
-
+                gamestartup = true
+                
                 // set isPlaneSelected to true
                 let node = sceneView.node(for: planeAnchor)
-            
+                
                 for otherplanes in sceneView.scene.rootNode.childNodes {
                     
                     if otherplanes != node {
                         otherplanes.removeFromParentNode()
                     }
                     
-               }
+                }
                 
                 
                 //This is the Vertical PlaneNode which Apple seems to flip its Y and Z
                 //Shortcut Apple? Yup. Don't worry, A mad scientist can fix it.
                 node?.childNodes.first?.geometry?.firstMaterial?.diffuse.contents = UIColor.clear
-
+                
                 //This is basically a copy that we add to the sceneView.
                 //We are doing this so our 0,0,0 point remains on our wall
                 //And all its alignment, orientation, etc is retained, including the Y and Z flip
                 let flippedYZ_Node = SCNNode()
-                flippedYZ_Node.simdWorldTransform = (node?.simdWorldTransform)!
-                flippedYZ_Node.simdWorldOrientation = (node?.simdWorldOrientation)!
-                flippedYZ_Node.simdWorldPosition =  (node?.simdWorldPosition)!
+                flippedYZ_Node.simdWorldTransform = (node?.simdWorldTransform) ?? simd_float4x4()
+                flippedYZ_Node.simdWorldOrientation = (node?.simdWorldOrientation) ?? simd_quatf()
+                flippedYZ_Node.simdWorldPosition =  (node?.simdWorldPosition) ?? simd_float3()
                 //Only remaining issue is the y and z axis are still flipped
                 sceneView.scene.rootNode.addChildNode(flippedYZ_Node)
                 
@@ -230,15 +230,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 //No f'd up tilting or misalignment with the real world.
                 //Apple's Y Z shortcut for vertical planes can
                 //royally screw up the PhysicsBody's alignment
-                //it can do a kinds of crazy stuff!
+                //it can do a kinds of crazy stuff
                 
                 let snapshot = sceneView.snapshot()
-                let slicedImages = splitImage(portraitSnapshot: snapshot, row: 5, column: 5);
+                let slicedImages = splitImage(portraitSnapshot: snapshot, row: 5, column: 5)
                 setUpGameBoard(gamenode: gamenode, scene: sceneView.scene,  slicedImages: slicedImages, snapshot: snapshot  )
                 
             }
         }
-       
+        
     }
     
     
@@ -247,12 +247,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
     }
     
-
+    
     
     @objc func doubleTapped(_ gesture: UITapGestureRecognizer)  {
         
         gesture.numberOfTapsRequired = doubletap
-
+        
         if !gamestartup {
             let location = gesture.location(in: gesture.view)
             selectExistingPlane(location: location)
@@ -263,9 +263,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     }
     
     func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
- 
+        
         if  ( contact.nodeA.name == nil || contact.nodeB.name == nil ) {
-           return
+            return
         }
         
         var A = contact.nodeA
@@ -276,10 +276,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             A = contact.nodeB
         }
         
-        var hitabrick = false
+        //var hitabrick = false
         if B.name == "sphere" && A.name == "brix" {
             A.removeFromParentNode()
-            hitabrick = true
+            //hitabrick = true
             brixCount = brixCount - 1
             scoreVal = scoreVal + 1
             
@@ -293,13 +293,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 drawManyBrix(slicedImages: gImageSlices)
             }
             
-            let yellow = SCNAction.run{ (B) in 
+            let yellow = SCNAction.run{ (B) in
                 let material = SCNMaterial()
                 material.diffuse.contents = UIColor.yellow
                 B.geometry?.firstMaterial = material
             }
             
-            let green = SCNAction.run{ (B) in 
+            let green = SCNAction.run{ (B) in
                 let material = SCNMaterial()
                 material.diffuse.contents = UIColor.green
                 B.geometry?.firstMaterial = material
@@ -314,27 +314,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             //Add sound here
         } else if B.name == "sphere" && A.name == "paddle" {
             
-            let orange = SCNAction.run{ (B) in 
+            let orange = SCNAction.run{ (B) in
                 let material = SCNMaterial()
                 material.diffuse.contents = UIColor.orange
                 B.geometry?.firstMaterial = material
                 
                 if buzz {
                     AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                    
+                    B.physicsBody?.applyForce(SCNVector3(x: -1.5, y: -1.5, z: -1.5), asImpulse: true)
+                    B.physicsBody?.angularVelocityFactor = SCNVector3(x:-1.5,y:-1.5,z:-1.5)
                 }
             }
             
-            let green = SCNAction.run{ (B) in 
+            let green = SCNAction.run{ (B) in
                 let material = SCNMaterial()
                 material.diffuse.contents = UIColor.green
                 B.geometry?.firstMaterial = material
             }
             
-            let runner1 = SCNAction.run{ (B) in 
+            let runner1 = SCNAction.run{ (B) in
                 gAmnesty = true
             }
             
-            let runner2 = SCNAction.run{ (B) in 
+            let runner2 = SCNAction.run{ (B) in
                 gAmnesty = false
             }
             
@@ -345,106 +348,40 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             
         }
-        if B.name == "sphere" { 
-            
+        
+        if B.name == "sphere" {
             if A.name == "grid" && !gAmnesty {
                 print("grid, Amnesty:", gAmnesty)
                 A.name = "gridX"
                 A.opacity = 0.15 / 2
-                gridCounter += 1  
+                gridCounter += 1
             }
-            
-            
-            let Bee = B.physicsBody!
-            
-            let max = Float(throttle)
-            
+
+            let Bee = B.physicsBody ?? SCNPhysicsBody()
+
+            Bee.applyForce(SCNVector3(x: Bee.velocity.x * 0.25, y: Bee.velocity.y * 0.25, z: Bee.velocity.z *  0.25), asImpulse: true)
+
+            let max = Float(0.5)
+
             if Bee.velocity.x > max {
-                Bee.velocity.x = max 
+                Bee.velocity.x = max
             } else if Bee.velocity.x < -max  {
                 Bee.velocity.x = -max
             }
-            
+
             if Bee.velocity.y > max {
-                Bee.velocity.y = max 
+                Bee.velocity.y = max
             } else if Bee.velocity.y < -max  {
                 Bee.velocity.y = -max
             }
-            
+
             if Bee.velocity.z > max {
-                Bee.velocity.z = max 
+                Bee.velocity.z = max
             } else if Bee.velocity.z < -max  {
                 Bee.velocity.z = -max
             }
             
-            
 
         }
-        
-        
-        
-        /*
-    
-        let boost = Float(0.05)
-
-        var X = Float(boost)
-        var Y = Float(boost)
-        var Z = Float(boost)
-        
-        if Bee.velocity.x < 0 {
-            X = -boost
-        } else {
-            X = boost
-        }
-        
-        if Bee.velocity.y < 0 {
-            Y = -boost
-        } else {
-            Y = boost
-        }
-       
-        if Bee.velocity.z < 0 {
-            Z = -boost
-        } else {
-            Z = boost
-        }
-            
-        if B.name == "sphere" {
-           
-            Bee.applyForce(SCNVector3(x:X,y:Y,z:Z), asImpulse: true)
-
-             if A.name == "grid" && !gAmnesty {
-                print("grid, Amnesty:", gAmnesty)
-                    A.name = "gridX"
-                    A.opacity = 0.15 / 2
-                    gridCounter += 1  
-            }
-        
-            let max = Float(throttle)
-            
-            if Bee.velocity.x > max {
-                Bee.velocity.x = max 
-            } else if Bee.velocity.x < -max  {
-                Bee.velocity.x = -max
-            }
-            
-            if Bee.velocity.y > max {
-                Bee.velocity.y = max 
-            } else if Bee.velocity.y < -max  {
-                Bee.velocity.y = -max
-            }
-            
-            if Bee.velocity.z > max {
-                Bee.velocity.z = max 
-            } else if Bee.velocity.z < -max  {
-                Bee.velocity.z = -max
-            }
-        }
-        */
     }
-    
-    
 }
-  
-
-    
