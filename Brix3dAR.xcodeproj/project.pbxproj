@@ -9,12 +9,10 @@
 /* Begin PBXBuildFile section */
 		6F00D8E127605C0700F4B165 /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F00D8E027605C0700F4B165 /* Common.swift */; };
 		EAC845A02051F3B3002AC10B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC8459F2051F3B3002AC10B /* AppDelegate.swift */; };
-		EAC845A22051F3B3002AC10B /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC845A12051F3B3002AC10B /* art.scnassets */; };
 		EAC845A42051F3B3002AC10B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAC845A32051F3B3002AC10B /* ViewController.swift */; };
 		EAC845A72051F3B3002AC10B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC845A52051F3B3002AC10B /* Main.storyboard */; };
 		EAC845A92051F3B4002AC10B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAC845A82051F3B4002AC10B /* Assets.xcassets */; };
 		EAC845AC2051F3B4002AC10B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAC845AA2051F3B4002AC10B /* LaunchScreen.storyboard */; };
-		EAFBF58E20759C5500DDE6F9 /* prstart.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EAFBF58D20759C5500DDE6F9 /* prstart.ttf */; };
 		EAFBF59020759E9100DDE6F9 /* ARCADE_N.TTF in Resources */ = {isa = PBXBuildFile; fileRef = EAFBF58F20759E9100DDE6F9 /* ARCADE_N.TTF */; };
 /* End PBXBuildFile section */
 
@@ -22,13 +20,11 @@
 		6F00D8E027605C0700F4B165 /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
 		EAC8459C2051F3B3002AC10B /* Brix3dAR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Brix3dAR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAC8459F2051F3B3002AC10B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		EAC845A12051F3B3002AC10B /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		EAC845A32051F3B3002AC10B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EAC845A62051F3B3002AC10B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EAC845A82051F3B4002AC10B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAC845AB2051F3B4002AC10B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EAC845AD2051F3B4002AC10B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		EAFBF58D20759C5500DDE6F9 /* prstart.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = prstart.ttf; sourceTree = "<group>"; };
 		EAFBF58F20759E9100DDE6F9 /* ARCADE_N.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = ARCADE_N.TTF; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -64,13 +60,11 @@
 			children = (
 				6F00D8E027605C0700F4B165 /* Common.swift */,
 				EAC8459F2051F3B3002AC10B /* AppDelegate.swift */,
-				EAC845A12051F3B3002AC10B /* art.scnassets */,
 				EAC845A32051F3B3002AC10B /* ViewController.swift */,
 				EAC845A52051F3B3002AC10B /* Main.storyboard */,
 				EAC845A82051F3B4002AC10B /* Assets.xcassets */,
 				EAC845AA2051F3B4002AC10B /* LaunchScreen.storyboard */,
 				EAC845AD2051F3B4002AC10B /* Info.plist */,
-				EAFBF58D20759C5500DDE6F9 /* prstart.ttf */,
 				EAFBF58F20759E9100DDE6F9 /* ARCADE_N.TTF */,
 			);
 			path = Brix3dAR;
@@ -136,8 +130,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EAC845A22051F3B3002AC10B /* art.scnassets in Resources */,
-				EAFBF58E20759C5500DDE6F9 /* prstart.ttf in Resources */,
 				EAC845AC2051F3B4002AC10B /* LaunchScreen.storyboard in Resources */,
 				EAFBF59020759E9100DDE6F9 /* ARCADE_N.TTF in Resources */,
 				EAC845A92051F3B4002AC10B /* Assets.xcassets in Resources */,
