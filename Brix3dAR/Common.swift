@@ -56,7 +56,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
 //    gamenode.addChildNode(fieldNode)
 //    field.strength = 1.0
     
-    let zGrid = CGFloat(gDepth / 1.75)
+    let zGrid = CGFloat(gDepth / 1.45)
     let xRange = stride(from: -gWidth / 3, through: gWidth / 3, by: gWidth / 3)
     let yRange = stride(from: gHeight / 3, through: -gHeight / 3, by: -gHeight / 3)
     

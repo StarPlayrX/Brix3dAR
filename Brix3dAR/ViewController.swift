@@ -332,37 +332,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         
         if B.name == "sphere" {
             if A.name == "grid" && !gAmnesty {
-                print("grid, Amnesty:", gAmnesty)
                 A.name = "gridX"
-                A.opacity = 0.15 / 2
+                A.opacity = 0.25
                 gridCounter += 1
             }
 
             let Bee = B.physicsBody ?? SCNPhysicsBody()
 
-            let boost: Float = 0.334
-            let max  : Float = 0.667
+            let boost  : Float = 0.5
+            let maxim  : Float = 1.0
             
             Bee.applyForce(SCNVector3(x: Bee.velocity.x * boost, y: Bee.velocity.y * boost, z: Bee.velocity.z * boost), asImpulse: true)
 
             //Ball Actuator
-            if Bee.velocity.x > max {
-                Bee.velocity.x = max
-            } else if Bee.velocity.x < -max  {
-                Bee.velocity.x = -max
-            }
-
-            if Bee.velocity.y > max {
-                Bee.velocity.y = max
-            } else if Bee.velocity.y < -max  {
-                Bee.velocity.y = -max
-            }
-
-            if Bee.velocity.z > max {
-                Bee.velocity.z = max
-            } else if Bee.velocity.z < -max  {
-                Bee.velocity.z = -max
-            }
+            Bee.velocity.x = max(-maxim, min(Bee.velocity.x, maxim))
+            Bee.velocity.y = max(-maxim, min(Bee.velocity.y, maxim))
+            Bee.velocity.z = max(-maxim, min(Bee.velocity.z, maxim))
         }
     }
 }
