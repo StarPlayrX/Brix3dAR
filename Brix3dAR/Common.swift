@@ -42,50 +42,43 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     gImageSlices = slicedImages
     drawManyBrix(slicedImages: gImageSlices)
     
-    
-    let field = SCNPhysicsField.turbulenceField(smoothness: 100, animationSpeed: 100)
-    let fieldNode = SCNNode()
-    field.scope = .insideExtent
-    field.direction.x = 0
-    field.direction.y = 0
-    field.direction.z = 0
-    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
-    field.usesEllipsoidalExtent = true
-    fieldNode.position.z = Float(gDepth / 2)
-    fieldNode.physicsField = field
-    fieldNode.physicsField?.falloffExponent = 0.01
-    gamenode.addChildNode(fieldNode)
-    field.strength = 1.0
-    
+//    let field = SCNPhysicsField.turbulenceField(smoothness: 100, animationSpeed: 100)
+//    let fieldNode = SCNNode()
+//    field.scope = .insideExtent
+//    field.direction.x = 0
+//    field.direction.y = 0
+//    field.direction.z = 0
+//    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
+//    field.usesEllipsoidalExtent = true
+//    fieldNode.position.z = Float(gDepth / 2)
+//    fieldNode.physicsField = field
+//    fieldNode.physicsField?.falloffExponent = 0.01
+//    gamenode.addChildNode(fieldNode)
+//    field.strength = 1.0
     
     let zGrid = CGFloat(gDepth / 1.75)
+    let xRange = stride(from: -gWidth / 3, through: gWidth / 3, by: gWidth / 3)
+    let yRange = stride(from: gHeight / 3, through: -gHeight / 3, by: -gHeight / 3)
     
-    let gridZone : Array<(x:CGFloat,y:CGFloat,z:CGFloat)> = [
-        (x: -gWidth / 3, y: gHeight / 3,  z: zGrid),
-        (x: 0,           y: gHeight / 3,  z: zGrid),
-        (x: gWidth / 3,  y: gHeight / 3,  z: zGrid),
-        (x: -gWidth / 3, y: 0,            z: zGrid),
-        (x: 0,           y: 0,            z: zGrid),
-        (x: gWidth / 3,  y: 0,            z: zGrid),
-        (x: -gWidth / 3, y: -gHeight / 3, z: zGrid),
-        (x: 0,           y: -gHeight / 3, z: zGrid),
-        (x: gWidth / 3,  y: -gHeight / 3, z: zGrid),
-    ]
+    let gridZone: [(x: CGFloat, y: CGFloat, z: CGFloat)] = xRange.flatMap { x in
+        yRange.map { y in
+            (x: x, y: y, z: zGrid)
+        }
+    }
     
-    for grid in gridZone {
+    gridZone.forEach { grid in
         let gridMaterial = SCNMaterial()
         gridMaterial.diffuse.contents = UIColor.magenta
         let gridPlane = SCNPlane(width: gWidth / 3, height: gHeight / 3)
-        let opacity = CGFloat(0.0)
-        let name = String("grid")
-        let x = grid.x
-        let y = grid.y
-        let z = grid.z
         drawPlane(gameNode: gamenode,
-                  Name: name,
+                  Name: "grid",
                   Material: gridMaterial,
                   Plane: gridPlane,
-                  Opacity: opacity, X: Float(x), Y: Float(y), Z: Float(z), Type: 1)
+                  Opacity: 0.0,
+                  X: Float(grid.x),
+                  Y: Float(grid.y),
+                  Z: Float(grid.z),
+                  Type: 1)
     }
     
     //Common Material for the Box
@@ -153,7 +146,6 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     z = Float(gDepth  / 4)
     drawSides(gameNode: gamenode, Name: name, Material: rightMaterial, Box: rightBox, Opacity: opacity, X: x, Y: y, Z: z)
     
-    
     //Back
     // 640 x 1136 iPhone 5
     //0.64   1.136
@@ -188,7 +180,6 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     z = Float(gDepth / 1.6)
     drawPaddle(gameNode: gamenode, Name: name, Material: paddleMaterial, Paddle: paddle, Opacity: opacity, X: x, Y: y, Z: z)
     
-    
     //node.geometry?.firstMaterial?.reflective.contents = Material.emission
     let wait = SCNAction.wait(duration: 0.5)
     //let rotation = SCNAction.rotateBy(x: .pi / 4, y: .pi / 4, z: -.pi / 4, duration: 2)
@@ -216,7 +207,6 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     for i in scene.rootNode.childNodes {
         i.castsShadow = false
     }
-    
     
     let h = Float(gHeight)
     let w = Float(gWidth)
@@ -270,9 +260,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     y = Float(0)
     z = Float(gDepth / 2)
     drawSphere(gameNode: gamenode, Name: name, Material: ballMaterial, Sphere: ball, Opacity: opacity, X: x, Y: y, Z: z)
-    
 }
-
 
 func drawPlane(gameNode:SCNNode,Name:String,Material:SCNMaterial,Plane:SCNPlane,Opacity:CGFloat,X:Float,Y:Float,Z:Float, Type: Int) {
     
@@ -292,10 +280,7 @@ func drawPlane(gameNode:SCNNode,Name:String,Material:SCNMaterial,Plane:SCNPlane,
     node.renderingOrder = 0
     
     gameNode.addChildNode(node)
-    
 }
-
-
 
 func drawPaddle(gameNode:SCNNode,Name:String,Material:SCNMaterial,Paddle:SCNBox,Opacity:CGFloat,X:Float,Y:Float,Z:Float) {
     let node = SCNNode(geometry: Paddle)
@@ -317,7 +302,6 @@ func drawPaddle(gameNode:SCNNode,Name:String,Material:SCNMaterial,Paddle:SCNBox,
     node.name = Name
     virtualstick = node
     node.renderingOrder = 0
-    
     
     gameNode.addChildNode(node)
 }
@@ -344,8 +328,6 @@ func drawSides(gameNode:SCNNode,Name:String,Material:SCNMaterial,Box:SCNBox,Opac
     
     node.physicsBody?.restitution = 0.7
     
-    
-    
     if Name == "back" {
         
         let scoreMaterial = SCNMaterial()
@@ -371,7 +353,6 @@ func drawSides(gameNode:SCNNode,Name:String,Material:SCNMaterial,Box:SCNBox,Opac
     }
 }
 
-
 func drawGeo(gameNode:SCNNode,Name:String,Material:SCNMaterial,Geo:SCNCylinder,Opacity:CGFloat,X:Float,Y:Float,Z:Float) {
     let node = SCNNode(geometry: Geo)
     node.position.y = node.position.y + Y
@@ -393,10 +374,6 @@ func drawGeo(gameNode:SCNNode,Name:String,Material:SCNMaterial,Geo:SCNCylinder,O
     
     gameNode.addChildNode(node)
 }
-
-
-
-
 
 func drawBrix(gameNode:SCNNode,Name:String,Material:[SCNMaterial],Brix:SCNBox,Opacity:CGFloat,X:Float,Y:Float,Z:Float) {
     
@@ -421,7 +398,6 @@ func drawBrix(gameNode:SCNNode,Name:String,Material:[SCNMaterial],Brix:SCNBox,Op
     
     gameNode.addChildNode(node)
 }
-
 
 func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphere,Opacity:CGFloat,X:Float,Y:Float,Z:Float) {
     
@@ -452,8 +428,6 @@ func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphe
         node.castsShadow = true
         gameNode.addChildNode(node)
     }
-    
-    
 }
 
 // This maps are colors / images 
@@ -466,7 +440,6 @@ func map(images: [UIImage]) -> [SCNMaterial] {
     }
     return materials
 }
-
 
 func cropImageToSquare(image: UIImage) -> UIImage? {
     var imageHeight = image.size.height
@@ -495,7 +468,6 @@ func cropImageToSquare(image: UIImage) -> UIImage? {
     }
     
 }
-
 
 /// Slice image into array of tiles
 func splitImage(portraitSnapshot: UIImage, row : Int , column : Int) -> [[UIImage]]{
@@ -531,8 +503,6 @@ func splitImage(portraitSnapshot: UIImage, row : Int , column : Int) -> [[UIImag
     return imageArr
 }
 
-
-
 //Turn the touch on
 func toggleTorch(on: Bool) {
     guard let device = AVCaptureDevice.default(for: AVMediaType.video)
@@ -561,7 +531,7 @@ func drawManyBrix(slicedImages: [[UIImage]]) {
     //DrawBrix
     ///Back Set
     var materials: [[SCNMaterial]] = []
-
+    
     typealias Patterns = [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)]
     
     func imageSlicer(
@@ -622,7 +592,7 @@ func drawManyBrix(slicedImages: [[UIImage]]) {
     ]
     
     faces(top: 1, bottom: 3, patterns: patternsB)
-  
+    
     let patternsC: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)] = [
         (0, 2, 4, 2, 0, 0),
         (1, 2, 3, 2, 1, 1),
@@ -642,7 +612,7 @@ func drawManyBrix(slicedImages: [[UIImage]]) {
     ]
     
     faces(top: 3, bottom: 1, patterns: patternsD)
-
+    
     let patternsE: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)] = [
         (0, 0, 4, 4, 0, 0),
         (1, 0, 3, 4, 1, 1),
@@ -652,54 +622,24 @@ func drawManyBrix(slicedImages: [[UIImage]]) {
     ]
     
     faces(top: 4, bottom: 0, patterns: patternsE)
-
-    func generatePattern(z: Double) -> [(x: Double, y: Double, z: Double)] {
-        var pattern: [(x: Double, y: Double, z: Double)] = []
+    
+    func generateBlocks() -> [(x: Double, y: Double, z: Double)] {
+        let X = stride(from: -0.25, through: 0.25, by:  0.125).map {  $0 }
+        let Y = stride(from:  0.25, through: -0.25, by: -0.125).map { $0 }
+        let Z = stride(from: -0.5, through:  0.0, by:   0.125).map {  $0 }
         
-        let coordinates: [(x: Double, y: Double)] = [
-            (-0.25,  0.25),
-            (-0.125, 0.25),
-            (0.0,    0.25),
-            (0.125,  0.25),
-            (0.25,   0.25),
-            (-0.25,  0.125),
-            (-0.125, 0.125),
-            (0.0,    0.125),
-            (0.125,  0.125),
-            (0.25,   0.125),
-            (-0.25,  0.0),
-            (-0.125, 0.0),
-            (0.0,    0.0),
-            (0.125,  0.0),
-            (0.25,   0.0),
-            (-0.25,  -0.125),
-            (-0.125, -0.125),
-            (0.0,    -0.125),
-            (0.125,  -0.125),
-            (0.25,   -0.125),
-            (-0.25,  -0.25),
-            (-0.125, -0.25),
-            (0.0,    -0.25),
-            (0.125,  -0.25),
-            (0.25,   -0.25)
-        ]
-        
-        for coordinate in coordinates {
-            let (x, y) = coordinate
-            pattern.append((x: x, y: y, z: z))
+        let blocks = Z.flatMap { z in
+            Y.flatMap { y in
+                X.map { x in
+                    (x, y, z)
+                }
+            }
         }
         
-        return pattern
+        return blocks
     }
     
-    var blocks = Array<(x: Double, y: Double, z: Double)>()
-    
-    let zValues: [Double] = [-0.5, -0.375, -0.25, -0.125, 0.0]
-    
-    for z in zValues {
-        let pattern = generatePattern(z: z)
-        blocks.append(contentsOf: pattern)
-    }
+    let blocks = generateBlocks()
     
     brixCount = materials.count
     
@@ -715,7 +655,6 @@ func drawManyBrix(slicedImages: [[UIImage]]) {
     }
     
     restartLevel = true
-    
 }
 
 // Helper function inserted by Swift 4.2 migrator.

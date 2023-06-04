@@ -97,9 +97,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 node?.childNodes.first?.position = position
             }
         }
-        
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -115,7 +113,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         sceneView.session.run(configuration)
         
         toggleTorch(on: false)// turn on the flash
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -162,20 +159,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
-        
     }
     
     func sessionWasInterrupted(_ session: ARSession) {
         // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
     }
     
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
     }
-    
-    
     
     // selects the anchor at the specified location and removes all other unused anchors
     func selectExistingPlane(location: CGPoint) {
@@ -195,9 +187,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                     if otherplanes != node {
                         otherplanes.removeFromParentNode()
                     }
-                    
                 }
-                
                 
                 //This is the Vertical PlaneNode which Apple seems to flip its Y and Z
                 //Shortcut Apple? Yup. Don't worry, A mad scientist can fix it.
@@ -238,19 +228,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
                 
             }
         }
-        
     }
-    
     
     // moves the plane around the scene
     func moveExistingPlane(location: CGPoint) {
         
     }
     
-    
-    
     @objc func doubleTapped(_ gesture: UITapGestureRecognizer)  {
-        
         gesture.numberOfTapsRequired = doubletap
         
         if !gamestartup {
@@ -259,12 +244,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         } else {
             return
         }
-        
     }
     
     func physicsWorld(_ world: SCNPhysicsWorld, didEnd contact: SCNPhysicsContact) {
         
-        if  ( contact.nodeA.name == nil || contact.nodeB.name == nil ) {
+        if contact.nodeA.name == nil || contact.nodeB.name == nil {
             return
         }
         
@@ -310,7 +294,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             let seq = SCNAction.sequence([yellow,wait,green])
             B.runAction(seq)
             
-            
             //Add sound here
         } else if B.name == "sphere" && A.name == "paddle" {
             
@@ -345,8 +328,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             
             let seq = SCNAction.sequence([runner1,orange,wait,green,wait,runner2])
             B.runAction(seq)
-            
-            
         }
         
         if B.name == "sphere" {
@@ -359,10 +340,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
             let Bee = B.physicsBody ?? SCNPhysicsBody()
 
-            Bee.applyForce(SCNVector3(x: Bee.velocity.x * 0.25, y: Bee.velocity.y * 0.25, z: Bee.velocity.z *  0.25), asImpulse: true)
+            let boost: Float = 0.334
+            let max  : Float = 0.667
+            
+            Bee.applyForce(SCNVector3(x: Bee.velocity.x * boost, y: Bee.velocity.y * boost, z: Bee.velocity.z * boost), asImpulse: true)
 
-            let max = Float(0.5)
-
+            //Ball Actuator
             if Bee.velocity.x > max {
                 Bee.velocity.x = max
             } else if Bee.velocity.x < -max  {
@@ -380,8 +363,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
             } else if Bee.velocity.z < -max  {
                 Bee.velocity.z = -max
             }
-            
-
         }
     }
 }
