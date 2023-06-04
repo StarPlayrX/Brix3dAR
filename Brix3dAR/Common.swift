@@ -42,21 +42,21 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     gImageSlices = slicedImages
     drawManyBrix(slicedImages: gImageSlices)
     
-  
-//    let field = SCNPhysicsField.turbulenceField(smoothness: 100, animationSpeed: 100)
-//    let fieldNode = SCNNode()
-//    field.scope = .insideExtent
-//    field.direction.x = 0
-//    field.direction.y = 0
-//    field.direction.z = 0
-//    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
-//    field.usesEllipsoidalExtent = true
-//    fieldNode.position.z = Float(gDepth / 2)
-//    fieldNode.physicsField = field
-//    fieldNode.physicsField?.falloffExponent = 0.01
-//    gamenode.addChildNode(fieldNode)
-//    field.strength = 1.0
-   
+    
+    let field = SCNPhysicsField.turbulenceField(smoothness: 100, animationSpeed: 100)
+    let fieldNode = SCNNode()
+    field.scope = .insideExtent
+    field.direction.x = 0
+    field.direction.y = 0
+    field.direction.z = 0
+    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
+    field.usesEllipsoidalExtent = true
+    fieldNode.position.z = Float(gDepth / 2)
+    fieldNode.physicsField = field
+    fieldNode.physicsField?.falloffExponent = 0.01
+    gamenode.addChildNode(fieldNode)
+    field.strength = 1.0
+    
     
     let zGrid = CGFloat(gDepth / 1.75)
     
@@ -87,7 +87,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
                   Plane: gridPlane,
                   Opacity: opacity, X: Float(x), Y: Float(y), Z: Float(z), Type: 1)
     }
-  
+    
     //Common Material for the Box
     let material = SCNMaterial()
     material.diffuse.contents = UIColor.lightGray
@@ -106,7 +106,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
               Name: name,
               Material: floorMaterial,
               Box: floorBox, Opacity:
-            opacity,
+                opacity,
               X: x, Y: y, Z: z
     )
     
@@ -119,7 +119,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     x = Float(0)
     y = Float(gHeight / 2)
     z = Float(gDepth / 4)
-   
+    
     drawSides(gameNode: gamenode,
               Name: name,
               Material: topMaterial,
@@ -152,8 +152,8 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     y = Float(0)
     z = Float(gDepth  / 4)
     drawSides(gameNode: gamenode, Name: name, Material: rightMaterial, Box: rightBox, Opacity: opacity, X: x, Y: y, Z: z)
-
-
+    
+    
     //Back
     // 640 x 1136 iPhone 5
     //0.64   1.136
@@ -176,7 +176,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     y = Float(0)
     z = Float(gDepth / 1.25)
     drawSides(gameNode: gamenode, Name: name, Material: frontMaterial, Box: frontBox, Opacity: opacity, X: x, Y: y, Z: z)
-
+    
     //Paddle
     let paddleMaterial = SCNMaterial()
     paddleMaterial.diffuse.contents = UIColor.blue
@@ -193,16 +193,16 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     let wait = SCNAction.wait(duration: 0.5)
     //let rotation = SCNAction.rotateBy(x: .pi / 4, y: .pi / 4, z: -.pi / 4, duration: 2)
     //let rotation2 = SCNAction.rotateBy(x: .pi / 8, y: .pi / 16, z: 0, duration: 1)
-
+    
     let moveblocks = SCNAction.moveBy(x: 0, y: 0, z: CGFloat(0.667), duration: 2)
     // let moveblocks = SCNAction.moveBy(x: 0, y: -0.15, z: 1.0, duration: 1.5)
     
     /*
- let runcode = SCNAction.run { (gameNode) in
- gameNode.addChildNode(node)
- }*/
+     let runcode = SCNAction.run { (gameNode) in
+     gameNode.addChildNode(node)
+     }*/
     
-    let rc = SCNAction.run{ (cubeNode) in 
+    let rc = SCNAction.run{ (cubeNode) in
         let test = cubeNode.childNodes
         
         for i in test {
@@ -229,7 +229,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
     let startZ = Float(0)
     
     var geoCoords: [(x: Float, y: Float, z: Float)] = []
-
+    
     //Refactored
     for row in 0..<numRows {
         for column in 0..<numColumns {
@@ -255,7 +255,7 @@ func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]
         x = Float(g.x)
         y = Float(g.y)
         z = Float(g.z)
-        drawGeo(gameNode: gamenode, Name: name, Material: geoMaterial, Geo: geo, Opacity: opacity, X: x, Y: y, Z: z) 
+        drawGeo(gameNode: gamenode, Name: name, Material: geoMaterial, Geo: geo, Opacity: opacity, X: x, Y: y, Z: z)
     }
     
     //Ball
@@ -290,9 +290,9 @@ func drawPlane(gameNode:SCNNode,Name:String,Material:SCNMaterial,Plane:SCNPlane,
     node.opacity = Opacity
     node.name = Name
     node.renderingOrder = 0
-
+    
     gameNode.addChildNode(node)
-
+    
 }
 
 
@@ -305,8 +305,8 @@ func drawPaddle(gameNode:SCNNode,Name:String,Material:SCNMaterial,Paddle:SCNBox,
     
     let boxShape = SCNPhysicsShape(geometry: Paddle,
                                    options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
-
-
+    
+    
     let physicsbody = SCNPhysicsBody(type: .static, shape: boxShape)
     node.physicsBody = physicsbody
     node.physicsBody?.categoryBitMask = paddleCategory
@@ -317,8 +317,8 @@ func drawPaddle(gameNode:SCNNode,Name:String,Material:SCNMaterial,Paddle:SCNBox,
     node.name = Name
     virtualstick = node
     node.renderingOrder = 0
-
-
+    
+    
     gameNode.addChildNode(node)
 }
 
@@ -343,15 +343,15 @@ func drawSides(gameNode:SCNNode,Name:String,Material:SCNMaterial,Box:SCNBox,Opac
     gameNode.addChildNode(node)
     
     node.physicsBody?.restitution = 0.7
-
-
-
+    
+    
+    
     if Name == "back" {
         
         let scoreMaterial = SCNMaterial()
         scoreMaterial.diffuse.contents = UIColor.orange
         var scoreNode = SCNNode()
-      
+        
         //Init Score Label
         score = SCNText(string: "0", extrusionDepth: 0.15 / 2)
         score.flatness = 100
@@ -362,12 +362,12 @@ func drawSides(gameNode:SCNNode,Name:String,Material:SCNMaterial,Box:SCNBox,Opac
         score.font = UIFont(name: "Arcade Normal", size: 0.15)
         score.chamferRadius = 0.00
         score.containerFrame = CGRect(origin: CGPoint(x:-gWidth/2,y:0.3), size: CGSize(width: gWidth, height: 0.3))
-        score.truncationMode = convertFromCATextLayerTruncationMode(CATextLayerTruncationMode.none) 
+        score.truncationMode = convertFromCATextLayerTruncationMode(CATextLayerTruncationMode.none)
         score.alignmentMode = convertFromCATextLayerAlignmentMode(CATextLayerAlignmentMode.center)
         
         scoreNode.renderingOrder = 0
         node.parent?.addChildNode(scoreNode)
-      
+        
     }
 }
 
@@ -379,7 +379,7 @@ func drawGeo(gameNode:SCNNode,Name:String,Material:SCNMaterial,Geo:SCNCylinder,O
     node.position.z = node.position.z + Z
     
     let shape = SCNPhysicsShape(geometry: Geo,
-                                   options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
+                                options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
     
     let physicsbody = SCNPhysicsBody(type: .kinematic, shape: shape)
     node.physicsBody = physicsbody
@@ -390,7 +390,7 @@ func drawGeo(gameNode:SCNNode,Name:String,Material:SCNMaterial,Geo:SCNCylinder,O
     node.opacity = Opacity
     node.name = Name
     node.renderingOrder = 0
-
+    
     gameNode.addChildNode(node)
 }
 
@@ -415,19 +415,10 @@ func drawBrix(gameNode:SCNNode,Name:String,Material:[SCNMaterial],Brix:SCNBox,Op
     node.geometry?.materials = Material
     node.opacity = Opacity
     node.name = Name
-        //node.geometry?.firstMaterial?.reflective.contents = Material.emission
-        //let wait = SCNAction.wait(duration: 0.5)
-        // let rotation = SCNAction.rotateBy(x: .pi, y: .pi, z: .pi, duration: 6)
-        //let moveblocks = SCNAction.moveBy(x: 0, y: 0, z: 0, duration: 2)
-        // let moveblocks = SCNAction.moveBy(x: 0, y: -0.15, z: 1.0, duration: 1.5)
-
-        //let actionSequence = SCNAction.sequence([wait,moveblocks])
-        // node.runAction(actionSequence)
-
     node.physicsBody?.restitution = 0.7
-
+    
     node.renderingOrder = 0
-
+    
     gameNode.addChildNode(node)
 }
 
@@ -438,13 +429,13 @@ func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphe
     node.position.y = node.position.y + Y
     node.position.x = node.position.x + X
     node.position.z = node.position.z + Z
-   
+    
     //to this:
-    let sphereShape 
-        = SCNPhysicsShape(geometry: Sphere, options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
-
+    let sphereShape
+    = SCNPhysicsShape(geometry: Sphere, options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
+    
     let physicsbody = SCNPhysicsBody(type: .dynamic, shape: sphereShape )
-
+    
     node.physicsBody = physicsbody
     node.physicsBody?.categoryBitMask = ballCategory
     node.physicsBody?.contactTestBitMask = ballCategory + gridCategory + wallCategory + brixCategory + paddleCategory
@@ -454,7 +445,7 @@ func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphe
     
     node.name = Name
     node.physicsBody?.allowsResting = false
-   
+    
     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
         node.physicsBody?.applyForce(SCNVector3(x: -0.5, y: -1, z: -0.5), asImpulse: true)
         node.physicsBody?.restitution = 0.6
@@ -462,7 +453,7 @@ func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphe
         gameNode.addChildNode(node)
     }
     
- 
+    
 }
 
 // This maps are colors / images 
@@ -539,13 +530,13 @@ func splitImage(portraitSnapshot: UIImage, row : Int , column : Int) -> [[UIImag
     }
     return imageArr
 }
-    
+
 
 
 //Turn the touch on
 func toggleTorch(on: Bool) {
-    guard let device = AVCaptureDevice.default(for: AVMediaType.video) 
-        else {return}
+    guard let device = AVCaptureDevice.default(for: AVMediaType.video)
+    else {return}
     
     if device.hasTorch {
         do {
@@ -568,1534 +559,171 @@ func toggleTorch(on: Bool) {
 
 func drawManyBrix(slicedImages: [[UIImage]]) {
     //DrawBrix
-    ///Back Set 
-    let images1a = [
-        slicedImages[0][0], //front
-        slicedImages[0][4], //right
-        slicedImages[0][4], //back
-        slicedImages[0][0], //left
-        slicedImages[0][0], //top
-        slicedImages[2][0], //bottom
-    ]
-    let materials1a = map(images: images1a)
-    
-    let images2a = [
-        slicedImages[0][1], //front
-        slicedImages[0][4], //right
-        slicedImages[0][3], //back 
-        slicedImages[0][0], //left
-        slicedImages[0][1], //top
-        slicedImages[2][1], //bottom
-    ]
-    let materials2a = map(images: images2a)
-    
-    let images3a = [
-        slicedImages[0][2], //front
-        slicedImages[0][4], //right
-        slicedImages[0][2], //back
-        slicedImages[0][0], //left
-        slicedImages[0][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3a = map(images: images3a)
-    
-    //4a
-    let images4a = [
-        slicedImages[0][3], //front
-        slicedImages[0][4], //right
-        slicedImages[0][1], //back
-        slicedImages[0][0], //left
-        slicedImages[0][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4a = map(images: images4a)
-    
-    //5a
-    let images5a = [
-        slicedImages[0][4], //front
-        slicedImages[0][4], //right
-        slicedImages[0][0], //back
-        slicedImages[0][0], //left
-        slicedImages[0][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5a = map(images: images5a)
-    
-    
-    
-    let images1b = [
-        slicedImages[1][0], //front
-        slicedImages[1][4], //right
-        slicedImages[1][4], //back 
-        slicedImages[1][0], //left
-        slicedImages[0][0], //top
-        slicedImages[2][0]  //bottom
-    ]
-    let materials1b = map(images: images1b)
-    
-    let images2b = [
-        slicedImages[1][1], //front
-        slicedImages[1][4], //right
-        slicedImages[1][3], //back 
-        slicedImages[1][0], //left
-        slicedImages[0][1], //top
-        slicedImages[2][1], //bottom
-    ]
-    let materials2b = map(images: images2b)
-    
-    let images3b = [
-        slicedImages[1][2], //front
-        slicedImages[1][4], //right
-        slicedImages[1][2], //back 
-        slicedImages[1][0], //left
-        slicedImages[0][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3b = map(images: images3b)
-    
-    
-    //4b
-    let images4b = [
-        slicedImages[1][3], //front
-        slicedImages[1][4], //right
-        slicedImages[1][1], //back 
-        slicedImages[1][0], //left
-        slicedImages[0][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4b = map(images: images4b)
-    
-    //5b
-    let images5b = [
-        slicedImages[1][4], //front
-        slicedImages[1][4], //right
-        slicedImages[1][0], //back 
-        slicedImages[1][0], //left
-        slicedImages[0][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5b = map(images: images5b)
-    
-    
-    let images1c = [
-        slicedImages[2][0], //front
-        slicedImages[2][4], //right
-        slicedImages[2][4], //back 
-        slicedImages[2][0], //left
-        slicedImages[0][0], //top
-        slicedImages[2][0]  //bottom
-    ]
-    let materials1c = map(images: images1c)
-    
-    let images2c = [
-        slicedImages[2][1], //front
-        slicedImages[2][4], //right
-        slicedImages[2][3], //back 
-        slicedImages[2][0], //left
-        slicedImages[0][1], //top
-        slicedImages[2][1]  //bottom
-    ]
-    
-    let materials2c = map(images: images2c)
-    
-    let images3c = [
-        slicedImages[2][2], //front
-        slicedImages[2][4], //right
-        slicedImages[2][2], //back 
-        slicedImages[2][0], //left
-        slicedImages[0][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3c = map(images: images3c)
-    
-    
-    //4c
-    let images4c = [
-        slicedImages[2][3], //front
-        slicedImages[2][4], //right
-        slicedImages[2][1], //back 
-        slicedImages[2][0], //left
-        slicedImages[0][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4c = map(images: images4c)
-    
-    //5c
-    let images5c = [
-        slicedImages[2][4], //front
-        slicedImages[2][4], //right
-        slicedImages[2][0], //back 
-        slicedImages[2][0], //left
-        slicedImages[0][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5c = map(images: images5c)
-    
-    
-    //x 1-4
-    let images1x = [
-        slicedImages[3][0], //front
-        slicedImages[3][4], //right
-        slicedImages[3][4], //back 
-        slicedImages[3][0], //left
-        slicedImages[0][0], //top
-        slicedImages[3][0]  //bottom
-    ]
-    let materials1x = map(images: images1x)
-    
-    
-    let images2x = [
-        slicedImages[3][1], //front
-        slicedImages[3][4], //right
-        slicedImages[3][3], //back 
-        slicedImages[3][0], //left
-        slicedImages[0][1], //top
-        slicedImages[3][1]  //bottom
-    ]
-    let materials2x = map(images: images2x)
-    
-    let images3x = [
-        slicedImages[3][2], //front
-        slicedImages[3][4], //right
-        slicedImages[3][2], //back 
-        slicedImages[3][0], //left
-        slicedImages[0][2], //top
-        slicedImages[3][2]  //bottom
-    ]
-    let materials3x = map(images: images3x)
-    
-    let images4x = [
-        slicedImages[3][3], //front
-        slicedImages[3][4], //right
-        slicedImages[3][1], //back 
-        slicedImages[3][0], //left
-        slicedImages[0][3], //top
-        slicedImages[3][3]  //bottom
-    ]
-    let materials4x = map(images: images4x)
-    
-    
-    let images5x = [
-        slicedImages[3][4], //front
-        slicedImages[3][4], //right
-        slicedImages[3][0], //back 
-        slicedImages[3][0], //left
-        slicedImages[0][4], //top
-        slicedImages[3][4]  //bottom
-    ]
-    let materials5x = map(images: images5x)
-    
-    
-    
-    //x5 1-4
-    let images1x5 = [
-        slicedImages[4][0], //front
-        slicedImages[4][4], //right
-        slicedImages[4][4], //back 
-        slicedImages[4][0], //left
-        slicedImages[0][0], //top
-        slicedImages[4][0]  //bottom
-    ]
-    let materials1x5 = map(images: images1x5)
-    
-    
-    let images2x5 = [
-        slicedImages[4][1], //front
-        slicedImages[4][4], //right
-        slicedImages[4][3], //back 
-        slicedImages[4][0], //left
-        slicedImages[0][1], //top
-        slicedImages[4][1]  //bottom
-    ]
-    let materials2x5 = map(images: images2x5)
-    
-    let images3x5 = [
-        slicedImages[4][2], //front
-        slicedImages[4][4], //right
-        slicedImages[4][2], //back 
-        slicedImages[4][0], //left
-        slicedImages[0][2], //top
-        slicedImages[4][2]  //bottom
-    ]
-    let materials3x5 = map(images: images3x5)
-    
-    let images4x5 = [
-        slicedImages[4][3], //front
-        slicedImages[4][4], //right
-        slicedImages[4][1], //back 
-        slicedImages[4][0], //left
-        slicedImages[0][3], //top
-        slicedImages[4][3]  //bottom
-    ]
-    let materials4x5 = map(images: images4x5)
-    
-    
-    let images5x5 = [
-        slicedImages[4][4], //front
-        slicedImages[4][4], //right
-        slicedImages[4][0], //back 
-        slicedImages[4][0], //left
-        slicedImages[0][4], //top
-        slicedImages[4][4]  //bottom
-    ]
-    let materials5x5 = map(images: images5x5)
-    
-    
-    
-    // second set
-    let images1d = [
-        slicedImages[0][0], //front
-        slicedImages[0][3], //right
-        slicedImages[0][4], //back 
-        slicedImages[0][1], //left
-        slicedImages[1][0], //top
-        slicedImages[3][0]  //bottom
-    ]
-    let materials1d = map(images: images1d)
-    
-    let images2d = [
-        slicedImages[0][1], //front
-        slicedImages[0][3], //right
-        slicedImages[0][3], //back 
-        slicedImages[0][1], //left
-        slicedImages[1][1], //top
-        slicedImages[3][1]  //bottom
-    ]
-    let materials2d = map(images: images2d)
-    
-    let images3d = [
-        slicedImages[0][2], //front
-        slicedImages[0][3], //right
-        slicedImages[0][2], //back 
-        slicedImages[0][1], //left
-        slicedImages[1][2], //top
-        slicedImages[3][2]  //bottom
-    ]
-    let materials3d = map(images: images3d)
-    
-    //4d
-    let images4d = [
-        slicedImages[0][3], //front
-        slicedImages[0][3], //right
-        slicedImages[0][1], //back 
-        slicedImages[0][1], //left
-        slicedImages[1][3], //top
-        slicedImages[3][3]  //bottom
-    ]
-    let materials4d = map(images: images4d)
-    
-    //5d
-    let images5d = [
-        slicedImages[0][4], //front
-        slicedImages[0][3], //right
-        slicedImages[0][0], //back 
-        slicedImages[0][1], //left
-        slicedImages[1][4], //top
-        slicedImages[3][4]  //bottom
-    ]
-    let materials5d = map(images: images5d)
-    
-    
-    
-    let images1e = [
-        slicedImages[1][0], //front
-        slicedImages[1][3], //right
-        slicedImages[1][4], //back 
-        slicedImages[1][1], //left
-        slicedImages[1][0], //top
-        slicedImages[3][0]  //bottom
-    ]
-    let materials1e = map(images: images1e)
-    
-    
-    let images2e = [
-        slicedImages[1][1], //front
-        slicedImages[1][3], //right
-        slicedImages[1][3], //back
-        slicedImages[1][1], //left
-        slicedImages[1][1], //top
-        slicedImages[3][1]  //bottom
-    ]
-    let materials2e = map(images: images2e)
-    
-    
-    let images3e = [
-        slicedImages[1][2], //front
-        slicedImages[1][3], //right
-        slicedImages[1][2], //back 
-        slicedImages[1][1], //left
-        slicedImages[1][2], //top
-        slicedImages[3][2], //bottom
-    ]
-    let materials3e = map(images: images3e)
-    
-    
-    //4e
-    let images4e = [
-        slicedImages[1][3], //front
-        slicedImages[1][3], //right
-        slicedImages[1][1], //back 
-        slicedImages[1][1], //left
-        slicedImages[1][3], //top
-        slicedImages[3][3], //bottom
-    ]
-    let materials4e = map(images: images4e)
-    
-    
-    //5e
-    let images5e = [
-        slicedImages[1][4], //front
-        slicedImages[1][3], //right
-        slicedImages[1][0], //back 
-        slicedImages[1][1], //left
-        slicedImages[1][4], //top
-        slicedImages[3][4], //bottom
-    ]
-    let materials5e = map(images: images5e)
-    
-    
-    
-    let images1f = [
-        slicedImages[2][0], //front
-        slicedImages[2][3], //right
-        slicedImages[2][4], //back 
-        slicedImages[2][1], //left
-        slicedImages[1][0], //top
-        slicedImages[3][0]  //bottom
-    ]
-    let materials1f = map(images: images1f)
-    
-    let images2f = [
-        slicedImages[2][1], //front
-        slicedImages[2][3], //right
-        slicedImages[2][3], //back 
-        slicedImages[2][1], //left
-        slicedImages[1][1], //top
-        slicedImages[3][1]  //bottom
-    ]
-    let materials2f = map(images: images2f)
-    
-    let images3f = [
-        slicedImages[2][2], //front
-        slicedImages[2][3], //right
-        slicedImages[2][2], //back 
-        slicedImages[2][1], //left
-        slicedImages[1][2], //top
-        slicedImages[3][2], //bottom
-    ]
-    let materials3f = map(images: images3f)
-    
-    
-    //4f
-    let images4f = [
-        slicedImages[2][3], //front
-        slicedImages[2][3], //right
-        slicedImages[2][1], //back 
-        slicedImages[2][1], //left
-        slicedImages[1][3], //top
-        slicedImages[3][3], //bottom
-    ]
-    let materials4f = map(images: images4f)
-    
-    
-    //5f
-    let images5f = [
-        slicedImages[2][4], //front
-        slicedImages[2][3], //right
-        slicedImages[2][0], //back 
-        slicedImages[2][1], //left
-        slicedImages[1][4], //top
-        slicedImages[3][4], //bottom
-    ]
-    let materials5f = map(images: images5f)
-    
-    
-    //y 1-4
-    let images1y = [
-        slicedImages[3][0], //front
-        slicedImages[3][3], //right
-        slicedImages[3][4], //back 
-        slicedImages[3][1], //left
-        slicedImages[1][0], //top
-        slicedImages[3][0]  //bottom
-    ]
-    let materials1y = map(images: images1y)
-    
-    let images2y = [
-        slicedImages[3][1], //front
-        slicedImages[3][3], //right
-        slicedImages[3][3], //back 
-        slicedImages[3][1], //left
-        slicedImages[1][1], //top
-        slicedImages[3][1]  //bottom
-    ]
-    let materials2y = map(images: images2y)
-    
-    let images3y = [
-        slicedImages[3][2], //front
-        slicedImages[3][3], //right
-        slicedImages[3][2], //back 
-        slicedImages[3][1], //left
-        slicedImages[1][2], //top
-        slicedImages[3][2], //bottom
-    ]
-    let materials3y = map(images: images3y)
-    
-    let images4y = [
-        slicedImages[3][3], //front
-        slicedImages[3][3], //right
-        slicedImages[3][1], //back 
-        slicedImages[3][1], //left
-        slicedImages[1][3], //top
-        slicedImages[3][3], //bottom
-    ]
-    let materials4y = map(images: images4y)
-    
-    
-    let images5y = [
-        slicedImages[3][4], //front
-        slicedImages[3][3], //right
-        slicedImages[3][0], //back 
-        slicedImages[3][1], //left
-        slicedImages[1][4], //top
-        slicedImages[3][4], //bottom
-    ]
-    let materials5y = map(images: images5y)
-    
-    
-    
-    //y5 1-4
-    let images1y5 = [
-        slicedImages[4][0], //front
-        slicedImages[4][3], //right
-        slicedImages[4][4], //back 
-        slicedImages[4][1], //left
-        slicedImages[1][0], //top
-        slicedImages[3][0]  //bottom
-    ]
-    let materials1y5 = map(images: images1y5)
-    
-    let images2y5 = [
-        slicedImages[4][1], //front
-        slicedImages[4][3], //right
-        slicedImages[4][3], //back 
-        slicedImages[4][1], //left
-        slicedImages[1][1], //top
-        slicedImages[3][1]  //bottom
-    ]
-    let materials2y5 = map(images: images2y5)
-    
-    let images3y5 = [
-        slicedImages[4][2], //front
-        slicedImages[4][3], //right
-        slicedImages[4][2], //back 
-        slicedImages[4][1], //left
-        slicedImages[1][2], //top
-        slicedImages[3][2], //bottom
-    ]
-    let materials3y5 = map(images: images3y5)
-    
-    let images4y5 = [
-        slicedImages[4][3], //front
-        slicedImages[4][3], //right
-        slicedImages[4][1], //back 
-        slicedImages[4][1], //left
-        slicedImages[1][3], //top
-        slicedImages[3][3], //bottom
-    ]
-    let materials4y5 = map(images: images4y5)
-    
-    
-    let images5y5 = [
-        slicedImages[3][4], //front
-        slicedImages[4][3], //right
-        slicedImages[3][0], //back 
-        slicedImages[3][1], //left
-        slicedImages[1][4], //top
-        slicedImages[3][4], //bottom
-    ]
-    let materials5y5 = map(images: images5y5)
-    
-    
-    
-    
-    //front set
-    let images1g = [
-        slicedImages[0][0], //front
-        slicedImages[0][2], //right
-        slicedImages[0][4], //back 
-        slicedImages[0][2], //left
-        slicedImages[2][0], //top
-        slicedImages[2][0], //bottom
-    ]
-    let materials1g = map(images: images1g)
-    
-    let images2g = [
-        slicedImages[0][1], //front
-        slicedImages[0][2], //right
-        slicedImages[0][3], //back 
-        slicedImages[0][2], //left
-        slicedImages[2][1], //top
-        slicedImages[2][1]  //bottom
-    ]
-    let materials2g = map(images: images2g)
-    
-    let images3g = [
-        slicedImages[0][2], //front
-        slicedImages[0][2], //right
-        slicedImages[0][2], //back 
-        slicedImages[0][2], //left
-        slicedImages[2][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3g = map(images: images3g)
-    
-    
-    //4g
-    let images4g = [
-        slicedImages[0][3], //front
-        slicedImages[0][2], //right
-        slicedImages[0][1], //back 
-        slicedImages[0][2], //left
-        slicedImages[2][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4g = map(images: images4g)
-    
-    
-    
-    //5g
-    let images5g = [
-        slicedImages[0][4], //front
-        slicedImages[0][2], //right
-        slicedImages[0][0], //back 
-        slicedImages[0][2], //left
-        slicedImages[2][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5g = map(images: images5g)
-    
-    
-    
-    let images1h = [
-        slicedImages[1][0], //front
-        slicedImages[1][2], //right
-        slicedImages[1][4], //back 
-        slicedImages[1][2], //left
-        slicedImages[2][0], //top
-        slicedImages[2][0]  //bottom
-    ]
-    let materials1h = map(images: images1h)
-    
-    let images2h = [
-        slicedImages[1][1], //front
-        slicedImages[1][2], //right
-        slicedImages[1][3], //back 
-        slicedImages[1][2], //left
-        slicedImages[2][1], //top
-        slicedImages[2][1]  //bottom
-    ]
-    let materials2h = map(images: images2h)
-    
-    
-    let images3h = [
-        slicedImages[1][2], //front
-        slicedImages[1][2], //right
-        slicedImages[1][2], //back 
-        slicedImages[1][2], //left
-        slicedImages[2][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3h = map(images: images3h)
-    
-    
-    //4h
-    let images4h = [
-        slicedImages[1][3], //front
-        slicedImages[1][2], //right
-        slicedImages[1][1], //back 
-        slicedImages[1][2], //left
-        slicedImages[2][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4h = map(images: images4h)
-    
-    
-    //5h
-    let images5h = [
-        slicedImages[1][4], //front
-        slicedImages[1][2], //right
-        slicedImages[1][0], //back 
-        slicedImages[2][2], //left
-        slicedImages[2][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5h = map(images: images5h)
-    
-    
-    let images1i = [
-        slicedImages[2][0], //front
-        slicedImages[2][2], //right
-        slicedImages[2][4], //back 
-        slicedImages[2][2], //left
-        slicedImages[2][0], //top
-        slicedImages[2][0]  //bottom
-    ]
-    let materials1i = map(images: images1i)
-    
-    let images2i = [
-        slicedImages[2][1], //front
-        slicedImages[2][2], //right
-        slicedImages[2][3], //back 
-        slicedImages[2][2], //left
-        slicedImages[2][1], //top
-        slicedImages[2][1]  //bottom
-    ]
-    let materials2i = map(images: images2i)
-    
-    
-    let images3i = [
-        slicedImages[2][2], //front
-        slicedImages[2][2], //right
-        slicedImages[2][2], //back 
-        slicedImages[2][2], //left
-        slicedImages[2][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3i = map(images: images3i)
-    
-    
-    //4i
-    let images4i = [
-        slicedImages[2][3], //front
-        slicedImages[2][2], //right
-        slicedImages[2][1], //back 
-        slicedImages[2][2], //left
-        slicedImages[2][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4i = map(images: images4i)
-    
-    
-    
-    //5i
-    let images5i = [
-        slicedImages[2][4], //front
-        slicedImages[2][2], //right
-        slicedImages[2][0], //back 
-        slicedImages[2][2], //left
-        slicedImages[2][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5i = map(images: images5i)
-    
-    
-    //z 1-4
-    let images1z = [
-        slicedImages[3][0], //front
-        slicedImages[3][2], //right
-        slicedImages[3][4], //back 
-        slicedImages[3][2], //left
-        slicedImages[2][0], //top
-        slicedImages[2][0]  //bottom
-    ]
-    let materials1z = map(images: images1z)
-    
-    let images2z = [
-        slicedImages[3][1], //front
-        slicedImages[3][2], //right
-        slicedImages[3][3], //back 
-        slicedImages[3][2], //left
-        slicedImages[2][1], //top
-        slicedImages[2][1]  //bottom
-    ]
-    let materials2z = map(images: images2z)
-    
-    
-    let images3z = [
-        slicedImages[3][2], //front
-        slicedImages[3][2], //right
-        slicedImages[3][2], //back 
-        slicedImages[3][2], //left
-        slicedImages[2][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3z = map(images: images3z)
-    
-    
-    //4z
-    let images4z = [
-        slicedImages[3][3], //front
-        slicedImages[3][2], //right
-        slicedImages[3][1], //back 
-        slicedImages[3][2], //left
-        slicedImages[2][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4z = map(images: images4z)
-    
-    
-    //5z
-    let images5z = [
-        slicedImages[3][4], //front
-        slicedImages[3][2], //right
-        slicedImages[3][0], //back 
-        slicedImages[3][2], //left
-        slicedImages[2][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5z = map(images: images5z)
-    
-    
-    
-    //z 1-4
-    let images1z5 = [
-        slicedImages[4][0], //front
-        slicedImages[4][2], //right
-        slicedImages[4][4], //back 
-        slicedImages[4][2], //left
-        slicedImages[2][0], //top
-        slicedImages[2][0]  //bottom
-    ]
-    let materials1z5 = map(images: images1z5)
-    
-    let images2z5 = [
-        slicedImages[4][1], //front
-        slicedImages[4][2], //right
-        slicedImages[4][3], //back 
-        slicedImages[4][2], //left
-        slicedImages[2][1], //top
-        slicedImages[2][1]  //bottom
-    ]
-    let materials2z5 = map(images: images2z5)
-    
-    
-    let images3z5 = [
-        slicedImages[4][2], //front
-        slicedImages[4][2], //right
-        slicedImages[4][2], //back 
-        slicedImages[4][2], //left
-        slicedImages[2][2], //top
-        slicedImages[2][2]  //bottom
-    ]
-    let materials3z5 = map(images: images3z5)
-    
-    
-    //4i
-    let images4z5 = [
-        slicedImages[4][3], //front
-        slicedImages[4][2], //right
-        slicedImages[4][1], //back 
-        slicedImages[4][2], //left
-        slicedImages[2][3], //top
-        slicedImages[2][3]  //bottom
-    ]
-    let materials4z5 = map(images: images4z5)
-    
-    
-    //5z
-    let images5z5 = [
-        slicedImages[4][4], //front
-        slicedImages[4][2], //right
-        slicedImages[4][0], //back 
-        slicedImages[4][2], //left
-        slicedImages[2][4], //top
-        slicedImages[2][4]  //bottom
-    ]
-    let materials5z5 = map(images: images5z5)
-    
-    
-    
-    
-    //1ga
-    let images1ga = [
-        slicedImages[0][0], //front
-        slicedImages[0][1], //right
-        slicedImages[0][4], //back 
-        slicedImages[0][3], //left
-        slicedImages[3][0], //top
-        slicedImages[1][0], //bottom
-    ]
-    let materials1ga = map(images: images1ga)
-    
-    let images2ga = [
-        slicedImages[0][1], //front
-        slicedImages[0][1], //right
-        slicedImages[0][3], //back 
-        slicedImages[0][3], //left
-        slicedImages[3][1], //top
-        slicedImages[1][1]  //bottom
-    ]
-    let materials2ga = map(images: images2ga)
-    
-    let images3ga = [
-        slicedImages[0][2], //front
-        slicedImages[0][1], //right
-        slicedImages[0][2], //back 
-        slicedImages[0][3], //left
-        slicedImages[3][2], //top
-        slicedImages[1][2]  //bottom
-    ]
-    let materials3ga = map(images: images3ga)
-    
-    
-    //4g
-    let images4ga = [
-        slicedImages[0][3], //front
-        slicedImages[0][1], //right
-        slicedImages[0][1], //back 
-        slicedImages[0][3], //left
-        slicedImages[3][3], //top
-        slicedImages[1][3]  //bottom
-    ]
-    let materials4ga = map(images: images4ga)
-    
-    
-    
-    //5ga
-    let images5ga = [
-        slicedImages[0][4], //front
-        slicedImages[0][1], //right
-        slicedImages[0][0], //back 
-        slicedImages[0][3], //left
-        slicedImages[3][4], //top
-        slicedImages[1][4]  //bottom
-    ]
-    let materials5ga = map(images: images5ga)
-    
-    
-    
-    let images1ha = [
-        slicedImages[1][0], //front
-        slicedImages[1][1], //right
-        slicedImages[1][4], //back 
-        slicedImages[1][3], //left
-        slicedImages[3][0], //top
-        slicedImages[1][0]  //bottom
-    ]
-    let materials1ha = map(images: images1ha)
-    
-    let images2ha = [
-        slicedImages[1][1], //front
-        slicedImages[1][1], //right
-        slicedImages[1][3], //back 
-        slicedImages[1][3], //left
-        slicedImages[3][1], //top
-        slicedImages[1][1]  //bottom
-    ]
-    let materials2ha = map(images: images2ha)
-    
-    
-    let images3ha = [
-        slicedImages[1][2], //front
-        slicedImages[1][1], //right
-        slicedImages[1][2], //back 
-        slicedImages[1][3], //left
-        slicedImages[3][2], //top
-        slicedImages[1][2]  //bottom
-    ]
-    let materials3ha = map(images: images3ha)
-    
-    
-    //4h
-    let images4ha = [
-        slicedImages[1][3], //front
-        slicedImages[1][1], //right
-        slicedImages[1][1], //back 
-        slicedImages[1][3], //left
-        slicedImages[3][3], //top
-        slicedImages[1][3]  //bottom
-    ]
-    let materials4ha = map(images: images4ha)
-    
-    
-    //5h
-    let images5ha = [
-        slicedImages[1][4], //front
-        slicedImages[1][1], //right
-        slicedImages[1][0], //back 
-        slicedImages[1][3], //left
-        slicedImages[3][4], //top
-        slicedImages[1][4]  //bottom
-    ]
-    let materials5ha = map(images: images5ha)
-    
-    
-    let images1ia = [
-        slicedImages[2][0], //front
-        slicedImages[2][1], //right
-        slicedImages[2][4], //back 
-        slicedImages[2][3], //left
-        slicedImages[3][0], //top
-        slicedImages[1][0]  //bottom
-    ]
-    let materials1ia = map(images: images1ia)
-    
-    let images2ia = [
-        slicedImages[2][1], //front
-        slicedImages[2][1], //right
-        slicedImages[2][3], //back 
-        slicedImages[2][3], //left
-        slicedImages[3][1], //top
-        slicedImages[1][1]  //bottom
-    ]
-    let materials2ia = map(images: images2ia)
-    
-    
-    let images3ia = [
-        slicedImages[2][2], //front
-        slicedImages[2][1], //right
-        slicedImages[2][2], //back 
-        slicedImages[2][3], //left
-        slicedImages[3][2], //top
-        slicedImages[1][2]  //bottom
-    ]
-    let materials3ia = map(images: images3ia)
-    
-    
-    //4ia
-    let images4ia = [
-        slicedImages[2][3], //front
-        slicedImages[2][1], //right
-        slicedImages[2][1], //back 
-        slicedImages[2][3], //left
-        slicedImages[3][3], //top
-        slicedImages[1][3]  //bottom
-    ]
-    let materials4ia = map(images: images4ia)
-    
-    
-    
-    //5ia
-    let images5ia = [
-        slicedImages[2][4], //front
-        slicedImages[2][1], //right
-        slicedImages[2][0], //back 
-        slicedImages[2][3], //left
-        slicedImages[3][4], //top
-        slicedImages[1][4]  //bottom
-    ]
-    let materials5ia = map(images: images5ia)
-    
-    
-    //za 1-4
-    let images1za = [
-        slicedImages[3][0], //front
-        slicedImages[3][1], //right
-        slicedImages[3][4], //back 
-        slicedImages[3][3], //left
-        slicedImages[3][0], //top
-        slicedImages[1][0]  //bottom
-    ]
-    let materials1za = map(images: images1za)
-    
-    let images2za = [
-        slicedImages[3][1], //front
-        slicedImages[3][1], //right
-        slicedImages[3][3], //back 
-        slicedImages[3][3], //left
-        slicedImages[3][1], //top
-        slicedImages[1][1]  //bottom
-    ]
-    let materials2za = map(images: images2za)
-    
-    
-    let images3za = [
-        slicedImages[3][2], //front
-        slicedImages[3][1], //right
-        slicedImages[3][2], //back 
-        slicedImages[3][3], //left
-        slicedImages[3][2], //top
-        slicedImages[1][2]  //bottom
-    ]
-    let materials3za = map(images: images3za)
-    
-    
-    //4z
-    let images4za = [
-        slicedImages[3][3], //front
-        slicedImages[3][1], //right
-        slicedImages[3][1], //back 
-        slicedImages[3][3], //left
-        slicedImages[3][3], //top
-        slicedImages[1][3]  //bottom
-    ]
-    let materials4za = map(images: images4za)
-    
-    
-    //5z
-    let images5za = [
-        slicedImages[3][4], //front
-        slicedImages[3][1], //right
-        slicedImages[3][0], //back 
-        slicedImages[3][3], //left
-        slicedImages[3][4], //top
-        slicedImages[1][4]  //bottom
-    ]
-    let materials5za = map(images: images5za)
-    
-    
-    
-    //z 1-4
-    let images1z5a = [
-        slicedImages[4][0], //front
-        slicedImages[4][1], //right
-        slicedImages[4][4], //back 
-        slicedImages[4][3], //left
-        slicedImages[3][0], //top
-        slicedImages[1][0]  //bottom
-    ]
-    let materials1z5a = map(images: images1z5a)
-    
-    let images2z5a = [
-        slicedImages[4][1], //front
-        slicedImages[4][1], //right
-        slicedImages[4][3], //back 
-        slicedImages[4][3], //left
-        slicedImages[3][1], //top
-        slicedImages[1][1]  //bottom
-    ]
-    let materials2z5a = map(images: images2z5a)
-    
-    
-    let images3z5a = [
-        slicedImages[4][2], //front
-        slicedImages[4][1], //right
-        slicedImages[4][2], //back 
-        slicedImages[4][3], //left
-        slicedImages[3][2], //top
-        slicedImages[1][2]  //bottom
-    ]
-    let materials3z5a = map(images: images3z5a)
-    
-    
-    //4i
-    let images4z5a = [
-        slicedImages[4][3], //front
-        slicedImages[4][1], //right
-        slicedImages[4][1], //back 
-        slicedImages[4][3], //left
-        slicedImages[3][3], //top
-        slicedImages[1][3]  //bottom
-    ]
-    let materials4z5a = map(images: images4z5a)
-    
-    //5z5a
-    let images5z5a = [
-        slicedImages[4][4], //front
-        slicedImages[4][1], //right
-        slicedImages[4][0], //back 
-        slicedImages[4][3], //left
-        slicedImages[3][4], //top
-        slicedImages[1][4]  //bottom
-    ]
-    let materials5z5a = map(images: images5z5a)
-    
-    //1gb
-    let images1gb = [
-        slicedImages[0][0], //front
-        slicedImages[0][0], //right
-        slicedImages[0][4], //back 
-        slicedImages[0][4], //left
-        slicedImages[4][0], //top
-        slicedImages[0][0], //bottom
-    ]
-    let materials1gb = map(images: images1gb)
-    
-    let images2gb = [
-        slicedImages[0][1], //front
-        slicedImages[0][0], //right
-        slicedImages[0][3], //back 
-        slicedImages[0][4], //left
-        slicedImages[4][1], //top
-        slicedImages[0][1]  //bottom
-    ]
-    let materials2gb = map(images: images2gb)
-    
-    let images3gb = [
-        slicedImages[0][2], //front
-        slicedImages[0][0], //right
-        slicedImages[0][2], //back 
-        slicedImages[0][4], //left
-        slicedImages[4][2], //top
-        slicedImages[0][2]  //bottom
-    ]
-    let materials3gb = map(images: images3gb)
-    
-    
-    //4g
-    let images4gb = [
-        slicedImages[0][3], //front
-        slicedImages[0][0], //right
-        slicedImages[0][1], //back 
-        slicedImages[0][4], //left
-        slicedImages[4][3], //top
-        slicedImages[0][3]  //bottom
-    ]
-    let materials4gb = map(images: images4gb)
-    
-    
-    //5ga
-    let images5gb = [
-        slicedImages[0][4], //front
-        slicedImages[0][0], //right
-        slicedImages[0][0], //back 
-        slicedImages[0][4], //left
-        slicedImages[4][4], //top
-        slicedImages[0][4]  //bottom
-    ]
-    let materials5gb = map(images: images5gb)  //materials5ga
-    
-    
-    
-    let images1hb = [
-        slicedImages[1][0], //front
-        slicedImages[1][0], //right
-        slicedImages[1][4], //back 
-        slicedImages[1][4], //left
-        slicedImages[4][0], //top
-        slicedImages[0][0]  //bottom
-    ]
-    let materials1hb = map(images: images1hb)
-    
-    let images2hb = [
-        slicedImages[1][1], //front
-        slicedImages[1][0], //right
-        slicedImages[1][3], //back 
-        slicedImages[1][4], //left
-        slicedImages[4][1], //top
-        slicedImages[0][1]  //bottom
-    ]
-    let materials2hb = map(images: images2hb)
-    
-    
-    let images3hb = [
-        slicedImages[1][2], //front
-        slicedImages[1][0], //right
-        slicedImages[1][2], //back 
-        slicedImages[1][4], //left
-        slicedImages[4][2], //top
-        slicedImages[0][2]  //bottom
-    ]
-    let materials3hb = map(images: images3hb)
-    
-    
-    //4h
-    let images4hb = [
-        slicedImages[1][3], //front
-        slicedImages[1][0], //right
-        slicedImages[1][1], //back 
-        slicedImages[1][4], //left
-        slicedImages[4][3], //top
-        slicedImages[0][3]  //bottom
-    ]
-    let materials4hb = map(images: images4hb)
-    
-    
-    //5h
-    let images5hb = [
-        slicedImages[1][4], //front
-        slicedImages[1][0], //right
-        slicedImages[1][0], //back 
-        slicedImages[1][4], //left
-        slicedImages[4][4], //top
-        slicedImages[0][4]  //bottom
-    ]
-    let materials5hb = map(images: images5hb)
-    
-    
-    let images1ib = [
-        slicedImages[2][0], //front
-        slicedImages[2][0], //right
-        slicedImages[2][4], //back 
-        slicedImages[2][4], //left
-        slicedImages[4][0], //top
-        slicedImages[0][0]  //bottom
-    ]
-    let materials1ib = map(images: images1ib)
-    
-    let images2ib = [
-        slicedImages[2][1], //front
-        slicedImages[2][0], //right
-        slicedImages[2][3], //back 
-        slicedImages[2][4], //left
-        slicedImages[4][1], //top
-        slicedImages[0][1]  //bottom
-    ]
-    let materials2ib = map(images: images2ib)
-    
-    
-    let images3ib = [
-        slicedImages[2][2], //front
-        slicedImages[2][0], //right
-        slicedImages[2][2], //back 
-        slicedImages[2][4], //left
-        slicedImages[4][2], //top
-        slicedImages[0][2]  //bottom
-    ]
-    let materials3ib = map(images: images3ib)
-    
-    
-    //4ia
-    let images4ib = [
-        slicedImages[2][3], //front
-        slicedImages[2][0], //right
-        slicedImages[2][1], //back 
-        slicedImages[2][4], //left
-        slicedImages[4][3], //top
-        slicedImages[0][3]  //bottom
-    ]
-    let materials4ib = map(images: images4ib)
-    
-    
-    
-    //5ia
-    let images5ib = [
-        slicedImages[2][4], //front
-        slicedImages[2][0], //right
-        slicedImages[2][0], //back 
-        slicedImages[2][4], //left
-        slicedImages[4][4], //top
-        slicedImages[0][4]  //bottom
-    ]
-    let materials5ib = map(images: images5ib)
-    
-    
-    //za 1-4
-    let images1zb = [
-        slicedImages[3][0], //front
-        slicedImages[3][0], //right
-        slicedImages[3][4], //back 
-        slicedImages[3][4], //left
-        slicedImages[4][0], //top
-        slicedImages[0][0]  //bottom
-    ]
-    let materials1zb = map(images: images1zb)
-    
-    let images2zb = [
-        slicedImages[3][1], //front
-        slicedImages[3][0], //right
-        slicedImages[3][3], //back 
-        slicedImages[3][4], //left
-        slicedImages[4][1], //top
-        slicedImages[0][1]  //bottom
-    ]
-    let materials2zb = map(images: images2zb)
-    
-    
-    let images3zb = [
-        slicedImages[3][2], //front
-        slicedImages[3][0], //right
-        slicedImages[3][2], //back 
-        slicedImages[3][4], //left
-        slicedImages[4][2], //top
-        slicedImages[0][2]  //bottom
-    ]
-    let materials3zb = map(images: images3zb)
-    
-    
-    //4z
-    let images4zb = [
-        slicedImages[3][3], //front
-        slicedImages[3][0], //right
-        slicedImages[3][1], //back 
-        slicedImages[3][4], //left
-        slicedImages[4][3], //top
-        slicedImages[0][3]  //bottom
-    ]
-    let materials4zb = map(images: images4zb)
-    
-    
-    //5z
-    let images5zb = [
-        slicedImages[3][4], //front
-        slicedImages[3][0], //right
-        slicedImages[3][0], //back 
-        slicedImages[3][4], //left
-        slicedImages[4][4], //top
-        slicedImages[0][4]  //bottom
-    ]
-    let materials5zb = map(images: images5zb)
-    
-    
-    
-    //z 1-4
-    let images1z5b = [
-        slicedImages[4][0], //front
-        slicedImages[4][0], //right
-        slicedImages[4][4], //back 
-        slicedImages[4][4], //left
-        slicedImages[4][0], //top
-        slicedImages[0][0]  //bottom
-    ]
-    let materials1z5b = map(images: images1z5b)
-    
-    let images2z5b = [
-        slicedImages[4][1], //front
-        slicedImages[4][0], //right
-        slicedImages[4][3], //back 
-        slicedImages[4][4], //left
-        slicedImages[4][1], //top
-        slicedImages[0][1]  //bottom
-    ]
-    let materials2z5b = map(images: images2z5b)
-    
-    
-    let images3z5b = [
-        slicedImages[4][2], //front
-        slicedImages[4][0], //right
-        slicedImages[4][2], //back 
-        slicedImages[4][4], //left
-        slicedImages[4][2], //top
-        slicedImages[0][2]  //bottom
-    ]
-    let materials3z5b = map(images: images3z5b)
-    
-    
-    //4i
-    let images4z5b = [
-        slicedImages[4][3], //front
-        slicedImages[4][0], //right
-        slicedImages[4][1], //back 
-        slicedImages[4][4], //left
-        slicedImages[4][3], //top
-        slicedImages[0][3]  //bottom
-    ]
-    let materials4z5b = map(images: images4z5b)
-    
-    
-    //5z
-    let images5z5b = [
-        slicedImages[4][4], //front
-        slicedImages[4][0], //right
-        slicedImages[4][0], //back 
-        slicedImages[4][4], //left
-        slicedImages[4][4], //top
-        slicedImages[0][4]  //bottom
-    ]
-    let materials5z5b = map(images: images5z5b)
-    
-    
-    
-    
-    let back : Array<(x:Double,y:Double,z:Double)> = [
-        (x:-0.25,y:0.250,z:-0.500),(x:-0.125,y:0.250,z:-0.500),(x:0,y:0.250,z:-0.500),(x:0.125,y:0.250,z:-0.500),(x:0.25,y:0.250,z:-0.500),
-        (x:-0.25,y:0.125,z:-0.500),(x:-0.125,y:0.125,z:-0.500),(x:0,y:0.125,z:-0.500),(x:0.125,y:0.125,z:-0.500),(x:0.25,y:0.125,z:-0.500),
-        (x:-0.25,y:0.000,z:-0.500),(x:-0.125,y:0.000,z:-0.500),(x:0,y:0.000,z:-0.500),(x:0.125,y:0.000,z:-0.500),(x:0.25,y:0.000,z:-0.500),
-        (x:-0.25,y:-0.125,z:-0.500),(x:-0.125,y:-0.125,z:-0.500),(x:0,y:-0.125,z:-0.500),(x:0.125,y:-0.125,z:-0.500),(x:0.25,y:-0.125,z:-0.500),
-        (x:-0.25,y:-0.250,z:-0.500),(x:-0.125,y:-0.250,z:-0.500),(x:0,y:-0.250,z:-0.500),(x:0.125,y:-0.250,z:-0.500),(x:0.25,y:-0.250,z:-0.500)
-    ]
-    
-    let middle : Array<(x:Double,y:Double,z:Double)> = [
-        (x:-0.25,y:0.2500,z:-0.375),(x:-0.125,y:0.2500,z:-0.375),(x:0,y:0.250,z:-0.375),(x:0.125,y:0.250,z:-0.375),(x:0.25,y:0.250,z:-0.375),
-        (x:-0.25,y:0.1250,z:-0.375),(x:-0.125,y:0.1250,z:-0.375),(x:0,y:0.125,z:-0.375),(x:0.125,y:0.125,z:-0.375),(x:0.25,y:0.125,z:-0.375),
-        (x:-0.25,y:0.0000,z:-0.375),(x:-0.125,y:0.0000,z:-0.375),(x:0,y:0.000,z:-0.375),(x:0.125,y:0.000,z:-0.375),(x:0.25,y:0.000,z:-0.375),
-        (x:-0.25,y:-0.125,z:-0.375),(x:-0.125,y:-0.125,z:-0.375),(x:0,y:-0.125,z:-0.375),(x:0.125,y:-0.125,z:-0.375),(x:0.25,y:-0.125,z:-0.375),
-        (x:-0.25,y:-0.250,z:-0.375),(x:-0.125,y:-0.250,z:-0.375),(x:0,y:-0.250,z:-0.375),(x:0.125,y:-0.250,z:-0.375),(x:0.25,y:-0.250,z:-0.375)
-    ]
-    
-    let middle2 : Array<(x:Double,y:Double,z:Double)> = [
-        (x:-0.25,y:0.2500,z:-0.250),(x:-0.125,y:0.2500,z:-0.250),(x:0,y:0.2500,z:-0.250),(x:0.125,y:0.2500,z:-0.250),(x:0.25,y:0.2500,z:-0.250),
-        (x:-0.25,y:0.1250,z:-0.250),(x:-0.125,y:0.1250,z:-0.250),(x:0,y:0.1250,z:-0.250),(x:0.125,y:0.1250,z:-0.250),(x:0.25,y:0.1250,z:-0.250),
-        (x:-0.25,y:0.0000,z:-0.250),(x:-0.125,y:0.0000,z:-0.250),(x:0,y:0.0000,z:-0.250),(x:0.125,y:0.0000,z:-0.250),(x:0.25,y:0.0000,z:-0.250),
-        (x:-0.25,y:-0.125,z:-0.250),(x:-0.125,y:-0.125,z:-0.250),(x:0,y:-0.125,z:-0.250),(x:0.125,y:-0.125,z:-0.250),(x:0.25,y:-0.125,z:-0.250),
-        (x:-0.25,y:-0.250,z:-0.250),(x:-0.125,y:-0.250,z:-0.250),(x:0,y:-0.250,z:-0.250),(x:0.125,y:-0.250,z:-0.250),(x:0.25,y:-0.250,z:-0.250)
-    ]
-    
-    let middle3 : Array<(x:Double,y:Double,z:Double)> = [
-        (x:-0.25,y:0.2500,z:-0.125),(x:-0.125,y:0.2500,z:-0.125),(x:0,y:0.2500,z:-0.125),(x:0.125,y:0.2500,z:-0.125),(x:0.25,y:0.2500,z:-0.125),
-        (x:-0.25,y:0.1250,z:-0.125),(x:-0.125,y:0.1250,z:-0.125),(x:0,y:0.1250,z:-0.125),(x:0.125,y:0.1250,z:-0.125),(x:0.25,y:0.1250,z:-0.125),
-        (x:-0.25,y:0.0000,z:-0.125),(x:-0.125,y:0.0000,z:-0.125),(x:0,y:0.0000,z:-0.125),(x:0.125,y:0.0000,z:-0.125),(x:0.25,y:0.0000,z:-0.125),
-        (x:-0.25,y:-0.125,z:-0.125),(x:-0.125,y:-0.125,z:-0.125),(x:0,y:-0.125,z:-0.125),(x:0.125,y:-0.125,z:-0.125),(x:0.25,y:-0.125,z:-0.125),
-        (x:-0.25,y:-0.250,z:-0.125),(x:-0.125,y:-0.250,z:-0.125),(x:0,y:-0.250,z:-0.125),(x:0.125,y:-0.250,z:-0.125),(x:0.25,y:-0.250,z:-0.125)
-    ]
-    
-    let front : Array<(x:Double,y:Double,z:Double)> = [
-        (x:-0.25,y:0.2500,z:-0.000),(x:-0.125,y:0.2500,z:-0.000),(x:0,y:0.2500,z:-0.000),(x:0.125,y:0.2500,z:-0.000),(x:0.25,y:0.2500,z:-0.000),
-        (x:-0.25,y:0.1250,z:-0.000),(x:-0.125,y:0.1250,z:-0.000),(x:0,y:0.1250,z:-0.000),(x:0.125,y:0.1250,z:-0.000),(x:0.25,y:0.1250,z:-0.000),
-        (x:-0.25,y:0.0000,z:-0.000),(x:-0.125,y:0.0000,z:-0.000),(x:0,y:0.0000,z:-0.000),(x:0.125,y:0.0000,z:-0.000),(x:0.25,y:0.0000,z:-0.000),
-        (x:-0.25,y:-0.125,z:-0.000),(x:-0.125,y:-0.125,z:-0.000),(x:0,y:-0.125,z:-0.000),(x:0.125,y:-0.125,z:-0.000),(x:0.25,y:-0.125,z:-0.000),
-        (x:-0.25,y:-0.250,z:-0.000),(x:-0.125,y:-0.250,z:-0.000),(x:0,y:-0.250,z:-0.000),(x:0.125,y:-0.250,z:-0.000),(x:0.25,y:-0.250,z:-0.000)
-    ]
-    
-    
-    var blocks = Array<(x:Double,y:Double,z:Double)>()
-    blocks.append(contentsOf: back)
-    blocks.append(contentsOf: middle)
-    blocks.append(contentsOf: middle2)
-    blocks.append(contentsOf: middle3)
-    blocks.append(contentsOf: front)
-    
-    let materialArray : Array<([SCNMaterial])> = [
+    ///Back Set
+    var materials: [[SCNMaterial]] = []
+
+    typealias Patterns = [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)]
+    
+    func imageSlicer(
+        patterns: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)],
+        front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int
+    ) -> [[SCNMaterial]] {
+        var mat = [[SCNMaterial]]()
         
-        //Back
-        materials1a,materials2a,materials3a,materials4a,materials5a,
-        materials1b,materials2b,materials3b,materials4b,materials5b,
-        materials1c,materials2c,materials3c,materials4c,materials5c,
-        materials1x,materials2x,materials3x,materials4x,materials5x,
-        materials1x5,materials2x5,materials3x5,materials4x5,materials5x5,
+        for pattern in patterns {
+            let images = [
+                slicedImages[front][pattern.front],
+                slicedImages[right][pattern.right],
+                slicedImages[back][pattern.back],
+                slicedImages[left][pattern.left],
+                slicedImages[top][pattern.top],
+                slicedImages[bottom][pattern.bottom]
+            ]
+            
+            let m = map(images: images)
+            mat.append(m)
+        }
         
-        //Middle
-        materials1d,materials2d,materials3d,materials4d,materials5d,
-        materials1e,materials2e,materials3e,materials4e,materials5e,
-        materials1f,materials2f,materials3f,materials4f,materials5f,
-        materials1y,materials2y,materials3y,materials4y,materials5y,
-        materials1y5,materials2y5,materials3y5,materials4y5,materials5y5,
+        return mat
+    }
+    
+    func faces(top: Int, bottom: Int, patterns: Patterns) {
+        for i in 0...4 {
+            let faceMaterials = imageSlicer(
+                patterns: patterns,
+                front: i,
+                right: i,
+                back: i,
+                left: i,
+                top: top,
+                bottom: bottom
+            )
+            
+            materials.append(contentsOf: faceMaterials)
+        }
+    }
+    
+    let patternsA: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)] = [
+        (0, 4, 4, 0, 0, 0),
+        (1, 4, 3, 0, 1, 1),
+        (2, 4, 2, 0, 2, 2),
+        (3, 4, 1, 0, 3, 3),
+        (4, 4, 0, 0, 4, 4)
+    ]
+    
+    faces(top: 0, bottom: 2, patterns: patternsA)
+    
+    let patternsB: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)] = [
+        (0, 3, 4, 1, 0, 0),
+        (1, 3, 3, 1, 1, 1),
+        (2, 3, 2, 1, 2, 2),
+        (3, 3, 1, 1, 3, 3),
+        (4, 3, 0, 1, 4, 4)
+    ]
+    
+    faces(top: 1, bottom: 3, patterns: patternsB)
+  
+    let patternsC: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)] = [
+        (0, 2, 4, 2, 0, 0),
+        (1, 2, 3, 2, 1, 1),
+        (2, 2, 2, 2, 2, 2),
+        (3, 2, 1, 2, 3, 3),
+        (4, 2, 0, 2, 4, 4)
+    ]
+    
+    faces(top: 2, bottom: 2, patterns: patternsC)
+    
+    let patternsD: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)] = [
+        (0, 1, 4, 3, 0, 0),
+        (1, 1, 3, 3, 1, 1),
+        (2, 1, 2, 3, 2, 2),
+        (3, 1, 1, 3, 3, 3),
+        (4, 1, 0, 3, 4, 4)
+    ]
+    
+    faces(top: 3, bottom: 1, patterns: patternsD)
+
+    let patternsE: [(front: Int, right: Int, back: Int, left: Int, top: Int, bottom: Int)] = [
+        (0, 0, 4, 4, 0, 0),
+        (1, 0, 3, 4, 1, 1),
+        (2, 0, 2, 4, 2, 2),
+        (3, 0, 1, 4, 3, 3),
+        (4, 0, 0, 4, 4, 4)
+    ]
+    
+    faces(top: 4, bottom: 0, patterns: patternsE)
+
+    func generatePattern(z: Double) -> [(x: Double, y: Double, z: Double)] {
+        var pattern: [(x: Double, y: Double, z: Double)] = []
         
-        //Middle2
-        materials1g,materials2g,materials3g,materials4g,materials5g,
-        materials1h,materials2h,materials3h,materials4h,materials5h,
-        materials1i,materials2i,materials3i,materials4i,materials5i,
-        materials1z,materials2z,materials3z,materials4z,materials5z,
-        materials1z5,materials2z5,materials3z5,materials4z5,materials5z5,
-        
-        //Middle3
-        materials1ga,materials2ga,materials3ga,materials4ga,materials5ga,
-        materials1ha,materials2ha,materials3ha,materials4ha,materials5ha,
-        materials1ia,materials2ia,materials3ia,materials4ia,materials5ia,
-        materials1za,materials2za,materials3za,materials4za,materials5za,
-        materials1z5a,materials2z5a,materials3z5a,materials4z5a,materials5z5a,
-        
-        //Front
-        materials1gb,materials2gb,materials3gb,materials4gb,materials5gb,
-        materials1hb,materials2hb,materials3hb,materials4hb,materials5hb,
-        materials1ib,materials2ib,materials3ib,materials4ib,materials5ib,
-        materials1zb,materials2zb,materials3zb,materials4zb,materials5zb,
-        materials1z5b,materials2z5b,materials3z5b,materials4z5b,materials5z5b,
-        
+        let coordinates: [(x: Double, y: Double)] = [
+            (-0.25,  0.25),
+            (-0.125, 0.25),
+            (0.0,    0.25),
+            (0.125,  0.25),
+            (0.25,   0.25),
+            (-0.25,  0.125),
+            (-0.125, 0.125),
+            (0.0,    0.125),
+            (0.125,  0.125),
+            (0.25,   0.125),
+            (-0.25,  0.0),
+            (-0.125, 0.0),
+            (0.0,    0.0),
+            (0.125,  0.0),
+            (0.25,   0.0),
+            (-0.25,  -0.125),
+            (-0.125, -0.125),
+            (0.0,    -0.125),
+            (0.125,  -0.125),
+            (0.25,   -0.125),
+            (-0.25,  -0.25),
+            (-0.125, -0.25),
+            (0.0,    -0.25),
+            (0.125,  -0.25),
+            (0.25,   -0.25)
         ]
-    
-    var counter = -1;
-    brixCount = 0;
-    //Draws the brix
-    for coords in blocks {
-        counter += 1
-        brixCount += 1
         
+        for coordinate in coordinates {
+            let (x, y) = coordinate
+            pattern.append((x: x, y: y, z: z))
+        }
+        
+        return pattern
+    }
+    
+    var blocks = Array<(x: Double, y: Double, z: Double)>()
+    
+    let zValues: [Double] = [-0.5, -0.375, -0.25, -0.125, 0.0]
+    
+    for z in zValues {
+        let pattern = generatePattern(z: z)
+        blocks.append(contentsOf: pattern)
+    }
+    
+    brixCount = materials.count
+    
+    for (index, coords) in blocks.enumerated() {
         let brix = SCNBox(width: 0.1, height: 0.1, length: 0.1, chamferRadius: 0.01)
         let opacity = CGFloat(1.0)
         let name = String("brix")
         let x = Float(coords.x)
         let y = Float(coords.y)
         let z = Float(coords.z)
-        drawBrix(gameNode: cubeNode, Name: name, Material: materialArray[counter], Brix: brix, Opacity: opacity, X: x, Y: y, Z: z)
         
-        if brixCount == 30 {
-           // break
-        }
+        drawBrix(gameNode: cubeNode, Name: name, Material: materials[index], Brix: brix, Opacity: opacity, X: x, Y: y, Z: z)
     }
     
-    restartLevel = true;
+    restartLevel = true
     
 }
-     
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromCATextLayerTruncationMode(_ input: CATextLayerTruncationMode) -> String {
-	return input.rawValue
+    return input.rawValue
 }
 
 // Helper function inserted by Swift 4.2 migrator.
 fileprivate func convertFromCATextLayerAlignmentMode(_ input: CATextLayerAlignmentMode) -> String {
-	return input.rawValue
+    return input.rawValue
 }
