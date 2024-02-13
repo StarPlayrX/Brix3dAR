@@ -26,8 +26,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
         // Set the view's delegate
         sceneView.delegate = self
         
-        //sceneView.debugOptions = .showPhysicsShapes
-        sceneView.showsStatistics = false
+        sceneView.debugOptions = .showPhysicsShapes
+        sceneView.showsStatistics = true
         sceneView.automaticallyUpdatesLighting = true
         sceneView.autoenablesDefaultLighting = true
         let scene = SCNScene()
@@ -339,15 +339,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, SCNPhysicsContactDele
 
             let Bee = B.physicsBody ?? SCNPhysicsBody()
 
-            let boost  : Float = 0.5
-            let maxim  : Float = 1.0
-            
+            let boost : Float = 0.25
             Bee.applyForce(SCNVector3(x: Bee.velocity.x * boost, y: Bee.velocity.y * boost, z: Bee.velocity.z * boost), asImpulse: true)
 
-            //Ball Actuator
-            Bee.velocity.x = max(-maxim, min(Bee.velocity.x, maxim))
-            Bee.velocity.y = max(-maxim, min(Bee.velocity.y, maxim))
-            Bee.velocity.z = max(-maxim, min(Bee.velocity.z, maxim))
+            let maxForce: Float = 1.5
+
+            Bee.velocity.x = max(min(Bee.velocity.x, maxForce), -maxForce)
+            Bee.velocity.y = max(min(Bee.velocity.y, maxForce), -maxForce)
+            Bee.velocity.z = max(min(Bee.velocity.z, maxForce), -maxForce)
         }
     }
 }

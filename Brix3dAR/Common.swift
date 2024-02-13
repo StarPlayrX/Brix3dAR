@@ -35,26 +35,26 @@ var gridCounter = Int(0)
 func setUpGameBoard(gamenode: SCNNode, scene: SCNScene, slicedImages: [[UIImage]], snapshot: UIImage) {
     gamenode.simdScale = simd_float3(x:gScale, y:gScale, z:gScale)
     
-    cubeNode.position = SCNVector3(x:0,y:0,z:0 )
+    cubeNode.position = SCNVector3(x:0,y:0,z:0)
     gamenode.addChildNode(cubeNode)
     
     //Draw Brix
     gImageSlices = slicedImages
     drawManyBrix(slicedImages: gImageSlices)
     
-//    let field = SCNPhysicsField.turbulenceField(smoothness: 100, animationSpeed: 100)
-//    let fieldNode = SCNNode()
-//    field.scope = .insideExtent
-//    field.direction.x = 0
-//    field.direction.y = 0
-//    field.direction.z = 0
-//    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
-//    field.usesEllipsoidalExtent = true
-//    fieldNode.position.z = Float(gDepth / 2)
-//    fieldNode.physicsField = field
-//    fieldNode.physicsField?.falloffExponent = 0.01
-//    gamenode.addChildNode(fieldNode)
-//    field.strength = 1.0
+    //    let field = SCNPhysicsField.turbulenceField(smoothness: 10, animationSpeed: 10)
+    //    let fieldNode = SCNNode()
+    //    field.scope = .insideExtent
+    //    field.direction.x = 0
+    //    field.direction.y = 0
+    //    field.direction.z = 0
+    //    field.halfExtent = SCNVector3(x:Float(gWidth/1.5), y:Float(gHeight/1.5), z:Float(gDepth/1.5))
+    //    field.usesEllipsoidalExtent = true
+    //    fieldNode.position.z = Float(gDepth / 2)
+    //    fieldNode.physicsField = field
+    //    fieldNode.physicsField?.falloffExponent = 0.01
+    //    gamenode.addChildNode(fieldNode)
+    //    field.strength = 0.1
     
     let zGrid = CGFloat(gDepth / 1.45)
     let xRange = stride(from: -gWidth / 3, through: gWidth / 3, by: gWidth / 3)
@@ -272,6 +272,9 @@ func drawPlane(gameNode:SCNNode,Name:String,Material:SCNMaterial,Plane:SCNPlane,
     let planeShape = SCNPhysicsShape(geometry: Plane, options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
     let physicsbody = SCNPhysicsBody(type: .static, shape: planeShape)
     node.physicsBody = physicsbody
+    node.physicsBody?.mass = 1
+    node.physicsBody?.friction = 0
+    node.physicsBody?.rollingFriction = 0
     node.physicsBody?.categoryBitMask = gridCategory
     node.physicsBody?.allowsResting = false
     node.geometry?.firstMaterial = Material
@@ -293,6 +296,11 @@ func drawPaddle(gameNode:SCNNode,Name:String,Material:SCNMaterial,Paddle:SCNBox,
     
     
     let physicsbody = SCNPhysicsBody(type: .static, shape: boxShape)
+    node.physicsBody?.mass = 1
+    node.physicsBody?.friction = 0
+    node.physicsBody?.rollingFriction = 0
+    node.physicsBody?.restitution = 1.0
+    
     node.physicsBody = physicsbody
     node.physicsBody?.categoryBitMask = paddleCategory
     node.physicsBody?.collisionBitMask = ballCategory + paddleCategory
@@ -316,7 +324,11 @@ func drawSides(gameNode:SCNNode,Name:String,Material:SCNMaterial,Box:SCNBox,Opac
                                    options: [SCNPhysicsShape.Option(rawValue: SCNPhysicsShape.Option.scale.rawValue) : gScale])
     
     let physicsbody = SCNPhysicsBody(type: .kinematic, shape: boxShape)
+    
     node.physicsBody = physicsbody
+    node.physicsBody?.mass = 1
+    node.physicsBody?.friction = 0
+    node.physicsBody?.rollingFriction = 0
     node.physicsBody?.categoryBitMask = wallCategory
     node.physicsBody?.collisionBitMask = ballCategory
     node.physicsBody?.contactTestBitMask = ballCategory
@@ -326,7 +338,7 @@ func drawSides(gameNode:SCNNode,Name:String,Material:SCNMaterial,Box:SCNBox,Opac
     node.renderingOrder = 0
     gameNode.addChildNode(node)
     
-    node.physicsBody?.restitution = 0.7
+    node.physicsBody?.restitution = 1.0
     
     if Name == "back" {
         
@@ -364,6 +376,9 @@ func drawGeo(gameNode:SCNNode,Name:String,Material:SCNMaterial,Geo:SCNCylinder,O
     
     let physicsbody = SCNPhysicsBody(type: .kinematic, shape: shape)
     node.physicsBody = physicsbody
+    node.physicsBody?.mass = 1
+    node.physicsBody?.friction = 0
+    node.physicsBody?.rollingFriction = 0
     node.physicsBody?.categoryBitMask = wallCategory
     node.physicsBody?.collisionBitMask = ballCategory
     node.physicsBody?.contactTestBitMask = ballCategory
@@ -387,12 +402,15 @@ func drawBrix(gameNode:SCNNode,Name:String,Material:[SCNMaterial],Brix:SCNBox,Op
     
     let physicsbody = SCNPhysicsBody(type: .kinematic, shape: boxShape)
     node.physicsBody = physicsbody
+    node.physicsBody?.mass = 0.5
+    node.physicsBody?.friction = 0
+    node.physicsBody?.rollingFriction = 0
     node.physicsBody?.categoryBitMask = brixCategory
     node.physicsBody?.allowsResting = false
     node.geometry?.materials = Material
     node.opacity = Opacity
     node.name = Name
-    node.physicsBody?.restitution = 0.7
+    node.physicsBody?.restitution = 1.0
     
     node.renderingOrder = 0
     
@@ -413,6 +431,9 @@ func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphe
     let physicsbody = SCNPhysicsBody(type: .dynamic, shape: sphereShape )
     
     node.physicsBody = physicsbody
+    node.physicsBody?.mass = 0.5
+    node.physicsBody?.friction = 0
+    node.physicsBody?.rollingFriction = 0
     node.physicsBody?.categoryBitMask = ballCategory
     node.physicsBody?.contactTestBitMask = ballCategory + gridCategory + wallCategory + brixCategory + paddleCategory
     node.physicsBody?.collisionBitMask = ballCategory + wallCategory + brixCategory + paddleCategory
@@ -423,8 +444,8 @@ func drawSphere(gameNode:SCNNode,Name:String,Material:SCNMaterial,Sphere:SCNSphe
     node.physicsBody?.allowsResting = false
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-        node.physicsBody?.applyForce(SCNVector3(x: -0.5, y: -1, z: -0.5), asImpulse: true)
-        node.physicsBody?.restitution = 0.6
+        node.physicsBody?.applyForce(SCNVector3(x: -1, y: -2, z: -1), asImpulse: true)
+        node.physicsBody?.restitution = 1.0
         node.castsShadow = true
         gameNode.addChildNode(node)
     }
